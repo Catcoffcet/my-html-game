@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
+<html lang="zh-CN" data-immersive-translate-page-theme="dark"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>🐎 套马大亨 · 万物皆可跑</title>
@@ -179,29 +178,29 @@
     .breed-x{justify-content:center;transform:rotate(90deg)}
   }
 </style>
-</head>
+<style data-id="immersive-translate-input-injected-css"></style></head>
 <body>
 
-<canvas id="game"></canvas>
+<canvas id="game" width="1481" height="780" style="width: 1481px; height: 780px;" class=""></canvas>
 
 <div id="hud">
   <div class="hud-left">
     <div class="pill">🪙 <b id="uiCoins">500</b></div>
-    <div class="pill">🐴 <b id="uiCount">0</b></div>
+    <div class="pill">🐴 <b id="uiCount">2</b></div>
     <div class="pill">🏆 <b id="uiWins">0</b></div>
     <div class="pill">🪢 <b id="uiLasso">3</b></div>
     <div class="pill">🌿 <b id="uiHerb">1</b></div>
   </div>
   <div class="hud-right">
-    <button class="btn small" id="btnStable">🐴 马厩</button>
-    <button class="btn small blue" id="btnBreed">🧬 育马场</button>
-    <button class="btn small pink" id="btnShop">🛒 商店</button>
-    <button class="btn small ghost" id="btnBet">🎰 赌马场</button>
+    <button class="btn small" id="btnStable" style="font-size: 17px;">🐴 马厩</button>
+    <button class="btn small blue" id="btnBreed" style="font-size: 17px;">🧬 育马场</button>
+    <button class="btn small pink" id="btnShop" style="font-size: 17px;">🛒 商店</button>
+    <button class="btn small ghost" id="btnBet" style="font-size: 17px;">🎰 赌马场</button>
   </div>
 </div>
 
 <div id="tip">WASD / 方向键 移动　·　Shift 冲刺　·　靠近目标点击甩套索（消耗 🪢）</div>
-<div id="toast"></div>
+<div id="toast" class="">附近没有目标，先追上去！</div>
 
 <div id="capUI" class="hidden">
   <div class="capbox">
@@ -1103,16 +1102,6 @@ function drawHorseSide(g, x, groundY, scale, h, phase, speed, isPlayer, fallen){
     g.beginPath();
     g.arc(headX - hr*0.16, headY - hr*2.38, 2.6*scale + 1, 0, TAU);
     g.fill();
-  }
-
-  /* 性别小标记 */
-  if (h.gender){
-    const gx = x - bl*0.62, gy = bodyY - bh*0.55;
-    g.font = 'bold ' + Math.max(9, 11*scale) + 'px system-ui,sans-serif';
-    g.textAlign = 'center';
-    g.textBaseline = 'middle';
-    g.fillStyle = h.gender === 'male' ? 'rgba(116,192,252,0.9)' : 'rgba(255,143,214,0.9)';
-    g.fillText(h.gender === 'male' ? '♂' : '♀', gx, gy);
   }
 
   /* 玩家标记 */
@@ -2978,5 +2967,5 @@ if (G.stable.length === 0){
 toast('🐎 欢迎来到原野！小心，听说这里还有汽车和鲸鱼娘……', 3000);
 requestAnimationFrame(loop);
 </script>
-</body>
-</html>
+
+</body></html>
