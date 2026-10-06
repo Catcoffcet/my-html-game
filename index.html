@@ -16,6 +16,7 @@
         padding:7px 16px;border-radius:999px;font-weight:800;font-size:15px;
         backdrop-filter:blur(8px);font-variant-numeric:tabular-nums;
         box-shadow:0 6px 18px rgba(0,0,0,.4)}
+  
   .pill b{color:#ffd93d}
   .hud-right{pointer-events:auto;display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
   .btn{background:linear-gradient(135deg,rgba(255,217,61,.16),rgba(255,159,67,.08));
@@ -65,7 +66,7 @@
          border-radius:15px;padding:13px;display:flex;flex-direction:column;gap:9px;transition:.18s}
   .hcard:hover{border-color:rgba(255,217,61,.3);background:rgba(255,255,255,.06)}
   .hcard-top{display:flex;gap:10px;align-items:center}
-  .hcard-top canvas{width:104px;height:72px;flex-shrink:0;border-radius:10px;background:rgba(0,0,0,.28)}
+  .hcard-top canvas{width:145px;height:100px;flex-shrink:0;border-radius:10px;background:rgba(0,0,0,.28)}
   .hname{font-size:15px;font-weight:900;display:flex;align-items:center;gap:6px;
          margin-bottom:5px;flex-wrap:wrap}
   .rtag{font-size:10.5px;font-weight:900;padding:1px 8px;border-radius:999px;
@@ -92,6 +93,19 @@
   .empty{text-align:center;padding:56px 20px;color:#6f8579;font-weight:700;
          font-size:14px;line-height:1.9;grid-column:1/-1}
   .empty .big{font-size:46px;margin-bottom:8px}
+  .stable-bar{display:flex;gap:8px;flex-wrap:wrap;padding:10px 20px;
+    border-bottom:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.02)}
+  .stable-bar select{background:#12241b;border:1px solid rgba(255,255,255,.14);
+    color:#e8f2ec;padding:7px 30px 7px 12px;border-radius:10px;font-family:inherit;
+    font-weight:700;font-size:12.5px;outline:none;cursor:pointer;
+    color-scheme:dark;appearance:none;-webkit-appearance:none;-moz-appearance:none;
+    background-image:linear-gradient(45deg,transparent 50%,#8fa89a 50%),
+                     linear-gradient(135deg,#8fa89a 50%,transparent 50%);
+    background-position:calc(100% - 17px) 50%,calc(100% - 12px) 50%;
+    background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+  .stable-bar select:hover{border-color:rgba(255,217,61,.4)}
+  .stable-bar select:focus{border-color:rgba(255,217,61,.65)}
+  .stable-bar select option{background:#12241b;color:#e8f2ec}
   #capUI{position:absolute;left:50%;bottom:14%;transform:translateX(-50%);
          z-index:35;pointer-events:none;width:min(460px,86vw)}
   #capUI.hidden{display:none}
@@ -186,6 +200,18 @@
   .breed-time{font-size:12px;font-weight:800;color:#8fa89a;margin-top:8px;
     font-variant-numeric:tabular-nums}
   
+  #betHud{position:absolute;right:16px;top:50%;transform:translateY(-50%);
+    z-index:30;width:168px;background:rgba(8,20,14,.86);
+    border:2px solid rgba(255,217,61,.45);border-radius:16px;padding:14px;
+    box-shadow:0 18px 50px rgba(0,0,0,.6);backdrop-filter:blur(8px)}
+  #betHud.hidden{display:none}
+  #betHud .bh-t{font-weight:900;font-size:13px;color:#ffd93d;text-align:center;margin-bottom:10px}
+  #betHud .bh-chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:10px}
+  #betHud .bh-chips .chip{flex:1 1 44%;padding:8px 0;font-size:13px;text-align:center}
+  #betHud .bh-sel{font-size:11.5px;font-weight:800;color:#9fb8aa;text-align:center;
+    margin-bottom:10px;line-height:1.5;min-height:34px}
+  #betHud .bh-sel b{color:#ffd93d}
+
   @media (max-width:640px){
     .hud-right .btn{padding:7px 10px;font-size:11.5px}
     .pill{font-size:12.5px;padding:6px 11px}
@@ -202,11 +228,11 @@
 
 <div id="hud">
   <div class="hud-left">
-  <div class="pill">💰 <b id="uiCoins">700</b></div>
-    <div class="pill">🐴 <b id="uiCount">4</b></div>
+  <div class="pill">💰 <b id="uiCoins">200</b></div>
+    <div class="pill">🐴 <b id="uiCount">7</b></div>
     <div class="pill">🏆 <b id="uiWins">0</b></div>
-<div class="pill">➰ <b id="uiLasso">1</b></div>
-    <div class="pill">🌿 <b id="uiHerb">0</b></div>
+<div class="pill">➰ <b id="uiLasso">0</b></div>
+    <div class="pill">🌿 <b id="uiHerb">1</b></div>
   </div>
   <div class="hud-right">
     <button class="btn small" id="btnStable" style="font-size: 17px;">🐴 马厩</button>
@@ -217,37 +243,66 @@
 </div>
 
 <div id="tip">WASD / 方向键 移动　·　按住 Shift 冲刺　·　靠近目标点击甩套索</div>
-<div id="toast" class="">🧬 育马房里正忙着呢，先等等吧</div>
+<div id="toast" class="">🎉 捕获「煎饼」！它似乎在想：至少包吃住。</div>
+
+<button id="btnSkipRace" class="btn" style="display: none; position: absolute; left: 50%; bottom: 13%; transform: translateX(-50%); z-index: 36; padding: 14px 32px; font-size: 16px; border-radius: 14px; box-shadow: rgba(0, 0, 0, 0.65) 0px 14px 40px;">🏆 夺冠！直接结算</button>
 
 <div id="capUI" class="hidden">
   <div class="capbox">
     <div class="t">🪢 套住了！疯狂点击挣脱！</div>
-    <div class="capbar"><div class="capfill" id="capFill" style="width: 60.6623%;"></div></div>
-    <div class="h">疯狂点击屏幕 / 敲空格键</div>
+    <div class="capbar"><div class="capfill" id="capFill" style="width: 95.7902%;"></div></div>
+<div class="h">点击</div>
   </div>
 </div>
 
 <div id="stableOverlay" class="overlay hidden">
   <div class="card">
     <div class="card-head">
-      <div class="card-title">🐴 我的马厩 <span id="stableSub">共 4 匹</span></div>
+      <div class="card-title">🐴 我的马厩 <span id="stableSub" class="">共 7 匹</span></div>
       <button class="btn ghost" id="btnCloseStable">关闭 ✕</button>
     </div>
-    <div class="card-body"><div class="grid" id="stableGrid"><div class="hcard"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">麻花</span><span class="gtag female">♀ 母</span><span class="rtag">非常离谱</span><span class="atag">6岁 · 成熟</span></div><div class="gene">身高 <b>1.49</b>　腿长 <b>1.53</b><br>体重 <b>626kg</b>　性格 <b>普通</b><br>平衡 <b style="color:#ffa94d">摇摇晃晃</b>　胜场 <b>0</b>　参赛 <b>0/2</b><br>步伐 <b style="color:#b197fc">弹弹跳跳</b></div></div></div><div class="srow"><span class="lb">肌肉</span><span class="sbar"><span class="sfill" style="width:59.2%;background:linear-gradient(90deg,#ff8a5c,#ffd93d)"></span></span><span class="sval">59</span></div><div class="srow"><span class="lb">耐力</span><span class="sbar"><span class="sfill" style="width:78.625%;background:linear-gradient(90deg,#4dabf7,#63e6be)"></span></span><span class="sval">79</span></div><div class="srow"><span class="lb">平衡</span><span class="sbar"><span class="sfill" style="width:36.075%;background:linear-gradient(90deg,#ffa94d,#ffa94d)"></span></span><span class="sval">36</span></div><div class="srow"><span class="lb">幸运</span><span class="sbar"><span class="sfill" style="width:65.675%;background:linear-gradient(90deg,#b197fc,#ffd93d)"></span></span><span class="sval">66</span></div><div class="srow"><span class="lb">身高</span><span class="sbar"><span class="sfill" style="width:44%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">44</span></div><div class="srow"><span class="lb">腿长</span><span class="sbar"><span class="sfill" style="width:59%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">59</span></div><div class="acts"><button class="btn small act-race">🏁 参赛 (0/2)</button><button class="btn small red act-sell">💰 卖 74</button></div></div><div class="hcard"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">冰霜</span><span class="gtag male">♂ 公</span><span class="rtag">非常离谱</span><span class="atag">4岁 · 壮年</span></div><div class="gene">身高 <b>2.26</b>　腿长 <b>1.23</b><br>体重 <b>796kg</b>　性格 <b>沉稳</b><br>平衡 <b style="color:#ffa94d">摇摇晃晃</b>　胜场 <b>0</b>　参赛 <b>0/2</b><br>步伐 <b style="color:#b197fc">沉重慢步</b></div></div></div><div class="srow"><span class="lb">肌肉</span><span class="sbar"><span class="sfill" style="width:66.60000000000001%;background:linear-gradient(90deg,#ff8a5c,#ffd93d)"></span></span><span class="sval">67</span></div><div class="srow"><span class="lb">耐力</span><span class="sbar"><span class="sfill" style="width:60.125%;background:linear-gradient(90deg,#4dabf7,#63e6be)"></span></span><span class="sval">60</span></div><div class="srow"><span class="lb">平衡</span><span class="sbar"><span class="sfill" style="width:26.825000000000003%;background:linear-gradient(90deg,#ffa94d,#ffa94d)"></span></span><span class="sval">27</span></div><div class="srow"><span class="lb">幸运</span><span class="sbar"><span class="sfill" style="width:61.975%;background:linear-gradient(90deg,#b197fc,#ffd93d)"></span></span><span class="sval">62</span></div><div class="srow"><span class="lb">身高</span><span class="sbar"><span class="sfill" style="width:66%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">66</span></div><div class="srow"><span class="lb">腿长</span><span class="sbar"><span class="sfill" style="width:47%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">47</span></div><div class="acts"><button class="btn small act-race">🏁 参赛 (0/2)</button><button class="btn small red act-sell">💰 卖 71</button></div></div><div class="hcard"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">银河</span><span class="gtag female">♀ 母</span><span class="rtag">相当离奇</span><span class="atag peak">5岁 · 巅峰</span></div><div class="gene">身高 <b>1.84</b>　腿长 <b>1.28</b><br>体重 <b>625kg</b>　性格 <b>普通</b><br>平衡 <b style="color:#8ce99a">四平八稳</b>　胜场 <b>0</b>　参赛 <b>0/2</b><br>步伐 <b style="color:#b197fc">弹弹跳跳</b></div></div></div><div class="srow"><span class="lb">肌肉</span><span class="sbar"><span class="sfill" style="width:44%;background:linear-gradient(90deg,#ff8a5c,#ffd93d)"></span></span><span class="sval">44</span></div><div class="srow"><span class="lb">耐力</span><span class="sbar"><span class="sfill" style="width:71%;background:linear-gradient(90deg,#4dabf7,#63e6be)"></span></span><span class="sval">71</span></div><div class="srow"><span class="lb">平衡</span><span class="sbar"><span class="sfill" style="width:60%;background:linear-gradient(90deg,#8ce99a,#8ce99a)"></span></span><span class="sval">60</span></div><div class="srow"><span class="lb">幸运</span><span class="sbar"><span class="sfill" style="width:25%;background:linear-gradient(90deg,#b197fc,#ffd93d)"></span></span><span class="sval">25</span></div><div class="srow"><span class="lb">身高</span><span class="sbar"><span class="sfill" style="width:54%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">54</span></div><div class="srow"><span class="lb">腿长</span><span class="sbar"><span class="sfill" style="width:49%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">49</span></div><div class="acts"><button class="btn small act-race">🏁 参赛 (0/2)</button><button class="btn small red act-sell">💰 卖 64</button></div></div><div class="hcard"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">微波炉</span><span class="gtag female">♀ 母</span><span class="rtag">相当离奇</span><span class="atag">7岁 · 成熟</span></div><div class="gene">身高 <b>1.32</b>　腿长 <b>1.30</b><br>体重 <b>548kg</b>　性格 <b>神经刀</b><br>平衡 <b style="color:#8ce99a">四平八稳</b>　胜场 <b>0</b>　参赛 <b>0/2</b><br>步伐 <b style="color:#b197fc">沉重慢步</b></div></div></div><div class="srow"><span class="lb">肌肉</span><span class="sbar"><span class="sfill" style="width:45.9%;background:linear-gradient(90deg,#ff8a5c,#ffd93d)"></span></span><span class="sval">46</span></div><div class="srow"><span class="lb">耐力</span><span class="sbar"><span class="sfill" style="width:28.9%;background:linear-gradient(90deg,#4dabf7,#63e6be)"></span></span><span class="sval">29</span></div><div class="srow"><span class="lb">平衡</span><span class="sbar"><span class="sfill" style="width:68%;background:linear-gradient(90deg,#8ce99a,#8ce99a)"></span></span><span class="sval">68</span></div><div class="srow"><span class="lb">幸运</span><span class="sbar"><span class="sfill" style="width:36.55%;background:linear-gradient(90deg,#b197fc,#ffd93d)"></span></span><span class="sval">37</span></div><div class="srow"><span class="lb">身高</span><span class="sbar"><span class="sfill" style="width:39%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">39</span></div><div class="srow"><span class="lb">腿长</span><span class="sbar"><span class="sfill" style="width:50%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">50</span></div><div class="acts"><button class="btn small act-race">🏁 参赛 (0/2)</button><button class="btn small red act-sell">💰 卖 61</button></div></div></div></div>
+    <div class="stable-bar">
+      <select id="stableKind">
+        <option value="all">全部类型</option>
+        <option value="horse">🐴 马</option>
+        <option value="car">🚗 车</option>
+        <option value="whale">🐋 鲸鱼娘</option>
+      </select>
+      <select id="stableGender" class="">
+        <option value="all">全部性别</option>
+        <option value="male">♂ 公</option>
+        <option value="female">♀ 母</option>
+      </select>
+      <select id="stableSort" class="">
+        <option value="power">综合实力 ↓</option>
+        <option value="muscle">肌肉 ↓</option>
+        <option value="stamina">耐力 ↓</option>
+        <option value="balance">平衡 ↓</option>
+        <option value="luck">幸运 ↓</option>
+        <option value="height">身高 ↓</option>
+        <option value="legLength">腿长 ↓</option>
+        <option value="weight">体重 ↓</option>
+        <option value="age">年龄 ↓</option>
+        <option value="wins">胜场 ↓</option>
+        <option value="weirdness">离谱度 ↓</option>
+        <option value="price">身价 ↓</option>
+      </select>
+    </div>
+    <div class="card-body"><div class="grid" id="stableGrid"><div class="hcard"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">风语者</span><span class="gtag female">♀ 母</span><span class="rtag">非常离谱</span><span class="atag">4岁 · 壮年</span></div><div class="gene">身高 <b>2.28</b>　腿长 <b>1.39</b><br>体重 <b>779kg</b>　性格 <b>沉稳</b><br>平衡 <b style="color:#ffd93d">马马虎虎</b>　胜场 <b>0</b>　参赛 <b>0/2</b><br>步伐 <b style="color:#b197fc">一坨挪动</b></div></div></div><div class="srow"><span class="lb">肌肉</span><span class="sbar"><span class="sfill" style="width:64.75%;background:linear-gradient(90deg,#ff8a5c,#ffd93d)"></span></span><span class="sval">65</span></div><div class="srow"><span class="lb">耐力</span><span class="sbar"><span class="sfill" style="width:90.65%;background:linear-gradient(90deg,#4dabf7,#63e6be)"></span></span><span class="sval">91</span></div><div class="srow"><span class="lb">平衡</span><span class="sbar"><span class="sfill" style="width:59.2%;background:linear-gradient(90deg,#ffd93d,#ffd93d)"></span></span><span class="sval">59</span></div><div class="srow"><span class="lb">幸运</span><span class="sbar"><span class="sfill" style="width:63.825%;background:linear-gradient(90deg,#b197fc,#ffd93d)"></span></span><span class="sval">64</span></div><div class="srow"><span class="lb">身高</span><span class="sbar"><span class="sfill" style="width:67%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">67</span></div><div class="srow"><span class="lb">腿长</span><span class="sbar"><span class="sfill" style="width:53%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">53</span></div><div class="acts"><button class="btn small act-race">🏁 参赛 (0/2)</button><button class="btn small red act-sell">💰 卖 77</button></div></div><div class="hcard"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">煎饼</span><span class="gtag female">♀ 母</span><span class="rtag">非常离谱</span><span class="atag">4岁 · 壮年</span></div><div class="gene">身高 <b>1.95</b>　腿长 <b>1.67</b><br>体重 <b>652kg</b>　性格 <b>神经刀</b><br>平衡 <b style="color:#ffd93d">马马虎虎</b>　胜场 <b>0</b>　参赛 <b>0/2</b><br>步伐 <b style="color:#b197fc">弓背驼行</b></div></div></div><div class="srow"><span class="lb">肌肉</span><span class="sbar"><span class="sfill" style="width:77.7%;background:linear-gradient(90deg,#ff8a5c,#ffd93d)"></span></span><span class="sval">78</span></div><div class="srow"><span class="lb">耐力</span><span class="sbar"><span class="sfill" style="width:70.3%;background:linear-gradient(90deg,#4dabf7,#63e6be)"></span></span><span class="sval">70</span></div><div class="srow"><span class="lb">平衡</span><span class="sbar"><span class="sfill" style="width:43.475%;background:linear-gradient(90deg,#ffd93d,#ffd93d)"></span></span><span class="sval">43</span></div><div class="srow"><span class="lb">幸运</span><span class="sbar"><span class="sfill" style="width:10.175%;background:linear-gradient(90deg,#b197fc,#ffd93d)"></span></span><span class="sval">10</span></div><div class="srow"><span class="lb">身高</span><span class="sbar"><span class="sfill" style="width:57%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">57</span></div><div class="srow"><span class="lb">腿长</span><span class="sbar"><span class="sfill" style="width:64%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">64</span></div><div class="acts"><button class="btn small act-race">🏁 参赛 (0/2)</button><button class="btn small red act-sell">💰 卖 80</button></div></div><div class="hcard"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">R1娘</span><span class="ktag">🐋 鲸鱼娘 彩蛋</span><span class="gtag male">♂ 公</span><span class="rtag">这是什么鬼</span><span class="atag">7岁 · 成熟</span></div><div class="gene">身高 <b>1.82</b>　腿长 <b>1.86</b><br>体重 <b>697kg</b>　性格 <b>普通</b><br>平衡 <b style="color:#ffd93d">马马虎虎</b>　胜场 <b>0</b>　参赛 <b>0/2</b><br>步伐 <b style="color:#b197fc">沉重慢步</b></div></div></div><div class="srow"><span class="lb">肌肉</span><span class="sbar"><span class="sfill" style="width:61.199999999999996%;background:linear-gradient(90deg,#ff8a5c,#ffd93d)"></span></span><span class="sval">61</span></div><div class="srow"><span class="lb">耐力</span><span class="sbar"><span class="sfill" style="width:54.4%;background:linear-gradient(90deg,#4dabf7,#63e6be)"></span></span><span class="sval">54</span></div><div class="srow"><span class="lb">平衡</span><span class="sbar"><span class="sfill" style="width:58.65%;background:linear-gradient(90deg,#ffd93d,#ffd93d)"></span></span><span class="sval">59</span></div><div class="srow"><span class="lb">幸运</span><span class="sbar"><span class="sfill" style="width:25.5%;background:linear-gradient(90deg,#b197fc,#ffd93d)"></span></span><span class="sval">26</span></div><div class="srow"><span class="lb">身高</span><span class="sbar"><span class="sfill" style="width:54%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">54</span></div><div class="srow"><span class="lb">腿长</span><span class="sbar"><span class="sfill" style="width:72%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">72</span></div><div class="acts"><button class="btn small act-race">🏁 参赛 (0/2)</button><button class="btn small red act-sell">💰 卖 160</button></div></div><div class="hcard"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">狂风·小可爱</span><span class="gtag male">♂ 公</span><span class="rtag">非常离谱</span><span class="atag peak">5岁 · 巅峰</span></div><div class="gene">身高 <b>1.53</b>　腿长 <b>1.00</b><br>体重 <b>638kg</b>　性格 <b>沉稳</b><br>平衡 <b style="color:#ffd93d">马马虎虎</b>　胜场 <b>0</b>　参赛 <b>0/2</b><br>步伐 <b style="color:#b197fc">一伸一缩</b></div></div></div><div class="srow"><span class="lb">肌肉</span><span class="sbar"><span class="sfill" style="width:66%;background:linear-gradient(90deg,#ff8a5c,#ffd93d)"></span></span><span class="sval">66</span></div><div class="srow"><span class="lb">耐力</span><span class="sbar"><span class="sfill" style="width:71%;background:linear-gradient(90deg,#4dabf7,#63e6be)"></span></span><span class="sval">71</span></div><div class="srow"><span class="lb">平衡</span><span class="sbar"><span class="sfill" style="width:56%;background:linear-gradient(90deg,#ffd93d,#ffd93d)"></span></span><span class="sval">56</span></div><div class="srow"><span class="lb">幸运</span><span class="sbar"><span class="sfill" style="width:45%;background:linear-gradient(90deg,#b197fc,#ffd93d)"></span></span><span class="sval">45</span></div><div class="srow"><span class="lb">身高</span><span class="sbar"><span class="sfill" style="width:45%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">45</span></div><div class="srow"><span class="lb">腿长</span><span class="sbar"><span class="sfill" style="width:38%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">38</span></div><div class="acts"><button class="btn small act-race">🏁 参赛 (0/2)</button><button class="btn small red act-sell">💰 卖 76</button></div></div><div class="hcard"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">土豆</span><span class="gtag male">♂ 公</span><span class="rtag">非常离谱</span><span class="atag">6岁 · 成熟</span></div><div class="gene">身高 <b>1.93</b>　腿长 <b>1.17</b><br>体重 <b>722kg</b>　性格 <b>沉稳</b><br>平衡 <b style="color:#ffd93d">马马虎虎</b>　胜场 <b>0</b>　参赛 <b>0/2</b><br>步伐 <b style="color:#b197fc">一伸一缩</b></div></div></div><div class="srow"><span class="lb">肌肉</span><span class="sbar"><span class="sfill" style="width:48.1%;background:linear-gradient(90deg,#ff8a5c,#ffd93d)"></span></span><span class="sval">48</span></div><div class="srow"><span class="lb">耐力</span><span class="sbar"><span class="sfill" style="width:60.125%;background:linear-gradient(90deg,#4dabf7,#63e6be)"></span></span><span class="sval">60</span></div><div class="srow"><span class="lb">平衡</span><span class="sbar"><span class="sfill" style="width:44.400000000000006%;background:linear-gradient(90deg,#ffd93d,#ffd93d)"></span></span><span class="sval">44</span></div><div class="srow"><span class="lb">幸运</span><span class="sbar"><span class="sfill" style="width:53.650000000000006%;background:linear-gradient(90deg,#b197fc,#ffd93d)"></span></span><span class="sval">54</span></div><div class="srow"><span class="lb">身高</span><span class="sbar"><span class="sfill" style="width:57%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">57</span></div><div class="srow"><span class="lb">腿长</span><span class="sbar"><span class="sfill" style="width:45%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">45</span></div><div class="acts"><button class="btn small act-race">🏁 参赛 (0/2)</button><button class="btn small red act-sell">💰 卖 69</button></div></div><div class="hcard"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">流星</span><span class="gtag female">♀ 母</span><span class="rtag">非常离谱</span><span class="atag old">10岁 · 高龄</span></div><div class="gene">身高 <b>1.39</b>　腿长 <b>1.01</b><br>体重 <b>599kg</b>　性格 <b>神经刀</b><br>平衡 <b style="color:#ffa94d">摇摇晃晃</b>　胜场 <b>0</b>　参赛 <b>0/2</b><br>步伐 <b style="color:#b197fc">后坐发力</b></div></div></div><div class="srow"><span class="lb">肌肉</span><span class="sbar"><span class="sfill" style="width:55.625%;background:linear-gradient(90deg,#ff8a5c,#ffd93d)"></span></span><span class="sval">56</span></div><div class="srow"><span class="lb">耐力</span><span class="sbar"><span class="sfill" style="width:38.125%;background:linear-gradient(90deg,#4dabf7,#63e6be)"></span></span><span class="sval">38</span></div><div class="srow"><span class="lb">平衡</span><span class="sbar"><span class="sfill" style="width:25%;background:linear-gradient(90deg,#ffa94d,#ffa94d)"></span></span><span class="sval">25</span></div><div class="srow"><span class="lb">幸运</span><span class="sbar"><span class="sfill" style="width:49.375%;background:linear-gradient(90deg,#b197fc,#ffd93d)"></span></span><span class="sval">49</span></div><div class="srow"><span class="lb">身高</span><span class="sbar"><span class="sfill" style="width:41%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">41</span></div><div class="srow"><span class="lb">腿长</span><span class="sbar"><span class="sfill" style="width:39%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">39</span></div><div class="acts"><button class="btn small act-race">🏁 参赛 (0/2)</button><button class="btn small red act-sell">💰 卖 62</button></div></div><div class="hcard"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">幻影</span><span class="gtag male">♂ 公</span><span class="rtag">相当离奇</span><span class="atag">8岁 · 老练</span></div><div class="gene">身高 <b>2.09</b>　腿长 <b>0.86</b><br>体重 <b>755kg</b>　性格 <b>神经刀</b><br>平衡 <b style="color:#ffa94d">摇摇晃晃</b>　胜场 <b>0</b>　参赛 <b>0/2</b><br>步伐 <b style="color:#b197fc">沉重慢步</b></div></div></div><div class="srow"><span class="lb">肌肉</span><span class="sbar"><span class="sfill" style="width:50.375%;background:linear-gradient(90deg,#ff8a5c,#ffd93d)"></span></span><span class="sval">50</span></div><div class="srow"><span class="lb">耐力</span><span class="sbar"><span class="sfill" style="width:29.45%;background:linear-gradient(90deg,#4dabf7,#63e6be)"></span></span><span class="sval">29</span></div><div class="srow"><span class="lb">平衡</span><span class="sbar"><span class="sfill" style="width:34.875%;background:linear-gradient(90deg,#ffa94d,#ffa94d)"></span></span><span class="sval">35</span></div><div class="srow"><span class="lb">幸运</span><span class="sbar"><span class="sfill" style="width:41.85%;background:linear-gradient(90deg,#b197fc,#ffd93d)"></span></span><span class="sval">42</span></div><div class="srow"><span class="lb">身高</span><span class="sbar"><span class="sfill" style="width:61%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">61</span></div><div class="srow"><span class="lb">腿长</span><span class="sbar"><span class="sfill" style="width:33%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">33</span></div><div class="acts"><button class="btn small act-race">🏁 参赛 (0/2)</button><button class="btn small red act-sell">💰 卖 55</button></div></div></div></div>
   </div>
 </div>
 
 <div id="breedOverlay" class="overlay hidden">
   <div class="card" style="max-width:960px">
     <div class="card-head">
-      <div class="card-title">🧬 育马场 <span id="breedSub">灵草 0 株　共有 4 匹马</span></div>
+      <div class="card-title">🧬 育马场 <span id="breedSub">灵草 1 株　共有 5 匹马</span></div>
       <button class="btn ghost" id="btnCloseBreed">关闭 ✕</button>
     </div>
     <div class="card-body">
       <div class="breed-slots">
-        <div class="bslot filled" id="slotMale"><div class="bslot-t">♂ 父本（公马）</div><div class="bslot-n">冰霜</div><div class="bslot-s">力量 72　耐力 65　平衡 29</div></div>
+        <div class="bslot" id="slotMale"><div class="bslot-t">♂ 父本（公马）</div><div class="bslot-n" style="color:#6f8579;font-size:14px">点击下方公马选择</div></div>
         <div class="breed-x">✕</div>
-        <div class="bslot filled" id="slotFemale"><div class="bslot-t">♀ 母本（母马）</div><div class="bslot-n">微波炉</div><div class="bslot-s">力量 54　耐力 34　平衡 80</div></div>
+        <div class="bslot" id="slotFemale"><div class="bslot-t">♀ 母本（母马）</div><div class="bslot-n" style="color:#6f8579;font-size:14px">点击下方母马选择</div></div>
       </div>
 
       <div class="breed-hint">
@@ -255,13 +310,13 @@
         有几率突变出父母没有的体型 / 花色 / 配饰。每次繁育消耗 <b>🌿 育马灵草 ×1</b>。
       </div>
 
-      <div id="breedJobBox" style="display: block;" data-built="1"><div class="breed-card"><div class="breed-egg" id="breedEgg">💞</div><div class="breed-title" id="breedTitle">🌿 灵草入腹</div><div class="breed-story" id="breedStory">灵草化作点点绿光，「<b>冰霜</b>」和「<b>麻花</b>」同时打了个喷嚏。</div><div class="breed-bar"><div class="breed-fill" id="breedFill" style="width: 46.64%;"></div></div><div class="breed-time" id="breedTime">⏳ 剩余 04:16　·　46.6%</div><button class="btn" id="btnBreedClaim" style="width:100%;margin-top:10px;display:none">带 它 去 马 厩</button></div></div>
+      <div id="breedJobBox" style="display: none;" data-built=""></div>
 
       <button class="btn" id="btnDoBreed" style="width:100%;padding:13px;margin-bottom:16px">
         🧬 开始繁育（消耗 🌿 育马灵草 ×1）
       </button>
 
-      <div class="grid" id="breedGrid"><div class="hcard pickcard"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">麻花</span><span class="gtag female">♀ 母</span></div><div class="gene">力 64　耐 85　平 39　运 71<br>身 1.49　腿 1.53　重 626kg</div></div></div></div><div class="hcard pickcard sel"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">冰霜</span><span class="gtag male">♂ 公</span></div><div class="gene">力 72　耐 65　平 29　运 67<br>身 2.26　腿 1.23　重 796kg</div></div></div></div><div class="hcard pickcard"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">银河</span><span class="gtag female">♀ 母</span></div><div class="gene">力 44　耐 71　平 60　运 25<br>身 1.84　腿 1.28　重 625kg</div></div></div></div><div class="hcard pickcard sel"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">微波炉</span><span class="gtag female">♀ 母</span></div><div class="gene">力 54　耐 34　平 80　运 43<br>身 1.32　腿 1.30　重 548kg</div></div></div></div></div>
+      <div class="grid" id="breedGrid"><div class="hcard pickcard"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">风语者</span><span class="gtag female">♀ 母</span></div><div class="gene">力 70　耐 98　平 64　运 69<br>身 2.28　腿 1.39　重 779kg</div></div></div></div><div class="hcard pickcard"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">R1娘</span><span class="gtag male">♂ 公</span><span class="ktag">🐋 鲸鱼娘 彩蛋</span></div><div class="gene">力 72　耐 64　平 69　运 30<br>身 1.82　腿 1.86　重 697kg</div></div></div></div><div class="hcard pickcard"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">狂风·小可爱</span><span class="gtag male">♂ 公</span></div><div class="gene">力 66　耐 71　平 56　运 45<br>身 1.53　腿 1.00　重 638kg</div></div></div></div><div class="hcard pickcard"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">流星</span><span class="gtag female">♀ 母</span></div><div class="gene">力 89　耐 61　平 40　运 79<br>身 1.39　腿 1.01　重 599kg</div></div></div></div><div class="hcard pickcard"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">幻影</span><span class="gtag male">♂ 公</span></div><div class="gene">力 65　耐 38　平 45　运 54<br>身 2.09　腿 0.86　重 755kg</div></div></div></div></div>
     </div>
   </div>
 </div>
@@ -269,15 +324,15 @@
 <div id="shopOverlay" class="overlay hidden">
   <div class="card" style="max-width:820px">
     <div class="card-head">
-      <div class="card-title">🛒 商店 <span id="shopCoins">🪙 700</span></div>
+      <div class="card-title">🛒 商店 <span id="shopCoins">🪙 200</span></div>
       <button class="btn ghost" id="btnCloseShop">关闭 ✕</button>
     </div>
     <div class="card-body">
       <div class="shop-target">
         <span>🎯 训练目标</span>
-        <select id="trainTarget"><option value="19">冰霜 · ♂ 公</option><option value="20">微波炉 · ♀ 母</option><option value="3">银河 · ♀ 母</option><option value="4">麻花 · ♀ 母</option></select>
+        <select id="trainTarget"><option value="19">狂风·小可爱 · ♂ 公</option><option value="20">流星 · ♀ 母</option><option value="6">风语者 · ♀ 母</option><option value="10">幻影 · ♂ 公</option><option value="16">R1娘 · ♂ 公</option></select>
       </div>
-      <div id="shopList"><div class="shop-item"><div class="ico">🪢</div><div style="flex:1;min-width:0"><div class="nm">套索<span class="own">🪙 150</span></div><div class="ds">捕获野马必备工具。每扔一次消耗 1 个。</div></div><button class="btn small">购买</button></div><div class="shop-item"><div class="ico">🪢</div><div style="flex:1;min-width:0"><div class="nm">套索 ×10 优惠装<span class="own">🪙 1350</span></div><div class="ds">一次买 10 个套索，省 150 金币。</div></div><button class="btn small ghost" disabled="">购买</button></div><div class="shop-item"><div class="ico">🌿</div><div style="flex:1;min-width:0"><div class="nm">育马灵草<span class="own">🪙 300</span></div><div class="ds">育马场使用，每次繁育消耗 1 株。</div></div><button class="btn small">购买</button></div><div class="shop-item"><div class="ico">💪</div><div style="flex:1;min-width:0"><div class="nm">肌肉强化剂<span class="own">🪙 220</span></div><div class="ds">对目标马匹使用，肌肉 +3～8。</div></div><button class="btn small">购买</button></div><div class="shop-item"><div class="ico">🫀</div><div style="flex:1;min-width:0"><div class="nm">耐力药剂<span class="own">🪙 220</span></div><div class="ds">对目标马匹使用，耐力 +3～8。</div></div><button class="btn small">购买</button></div><div class="shop-item"><div class="ico">⚖️</div><div style="flex:1;min-width:0"><div class="nm">平衡特训课<span class="own">🪙 260</span></div><div class="ds">对目标马匹使用，平衡 +3～8。</div></div><button class="btn small">购买</button></div><div class="shop-item"><div class="ico">🍀</div><div style="flex:1;min-width:0"><div class="nm">四叶草护符<span class="own">🪙 300</span></div><div class="ds">对目标马匹使用，幸运 +3～8。</div></div><button class="btn small">购买</button></div><div class="shop-item"><div class="ico">📏</div><div style="flex:1;min-width:0"><div class="nm">长高钙片<span class="own">🪙 280</span></div><div class="ds">对目标马匹使用，身高 +0.05～0.15。</div></div><button class="btn small">购买</button></div><div class="shop-item"><div class="ico">🦵</div><div style="flex:1;min-width:0"><div class="nm">拉腿瑜伽课<span class="own">🪙 280</span></div><div class="ds">对目标马匹使用，腿长 +0.05～0.15。</div></div><button class="btn small">购买</button></div><div class="shop-item"><div class="ico">⚖️</div><div style="flex:1;min-width:0"><div class="nm">减脂操<span class="own">🪙 200</span></div><div class="ds">对目标马匹使用，体重降低 5～20kg（越快越灵活）。</div></div><button class="btn small">购买</button></div><div class="shop-item"><div class="ico">⏳</div><div style="flex:1;min-width:0"><div class="nm">青春之水<span class="own">🪙 600</span></div><div class="ds">对目标马匹使用，年龄 -1（最低 1 岁）。</div></div><button class="btn small">购买</button></div></div>
+      <div id="shopList"><div class="shop-item"><div class="ico">🪢</div><div style="flex:1;min-width:0"><div class="nm">套索<span class="own">🪙 150</span></div><div class="ds">捕获野马必备工具。每扔一次消耗 1 个。</div></div><button class="btn small">购买</button></div><div class="shop-item"><div class="ico">🪢</div><div style="flex:1;min-width:0"><div class="nm">套索 ×10 优惠装<span class="own">🪙 1350</span></div><div class="ds">一次买 10 个套索，省 150 金币。</div></div><button class="btn small ghost" disabled="">购买</button></div><div class="shop-item"><div class="ico">🌿</div><div style="flex:1;min-width:0"><div class="nm">育马灵草<span class="own">🪙 300</span></div><div class="ds">育马场使用，每次繁育消耗 1 株。</div></div><button class="btn small ghost" disabled="">购买</button></div><div class="shop-item"><div class="ico">💪</div><div style="flex:1;min-width:0"><div class="nm">肌肉强化剂<span class="own">🪙 220</span></div><div class="ds">对目标马匹使用，肌肉 +3～8。</div></div><button class="btn small ghost" disabled="">购买</button></div><div class="shop-item"><div class="ico">🫀</div><div style="flex:1;min-width:0"><div class="nm">耐力药剂<span class="own">🪙 220</span></div><div class="ds">对目标马匹使用，耐力 +3～8。</div></div><button class="btn small ghost" disabled="">购买</button></div><div class="shop-item"><div class="ico">⚖️</div><div style="flex:1;min-width:0"><div class="nm">平衡特训课<span class="own">🪙 260</span></div><div class="ds">对目标马匹使用，平衡 +3～8。</div></div><button class="btn small ghost" disabled="">购买</button></div><div class="shop-item"><div class="ico">🍀</div><div style="flex:1;min-width:0"><div class="nm">四叶草护符<span class="own">🪙 300</span></div><div class="ds">对目标马匹使用，幸运 +3～8。</div></div><button class="btn small ghost" disabled="">购买</button></div><div class="shop-item"><div class="ico">📏</div><div style="flex:1;min-width:0"><div class="nm">长高钙片<span class="own">🪙 280</span></div><div class="ds">对目标马匹使用，身高 +0.05～0.15。</div></div><button class="btn small ghost" disabled="">购买</button></div><div class="shop-item"><div class="ico">🦵</div><div style="flex:1;min-width:0"><div class="nm">拉腿瑜伽课<span class="own">🪙 280</span></div><div class="ds">对目标马匹使用，腿长 +0.05～0.15。</div></div><button class="btn small ghost" disabled="">购买</button></div><div class="shop-item"><div class="ico">⚖️</div><div style="flex:1;min-width:0"><div class="nm">减脂操<span class="own">🪙 200</span></div><div class="ds">对目标马匹使用，体重降低 5～20kg（越快越灵活）。</div></div><button class="btn small">购买</button></div><div class="shop-item"><div class="ico">⏳</div><div style="flex:1;min-width:0"><div class="nm">青春之水<span class="own">🪙 600</span></div><div class="ds">对目标马匹使用，年龄 -1（最低 1 岁）。</div></div><button class="btn small ghost" disabled="">购买</button></div></div>
     </div>
   </div>
 </div>
@@ -297,19 +352,30 @@
         <button class="chip" data-amt="300">300</button>
         <button class="chip" data-amt="1000">1000</button>
         <button class="chip" data-amt="3000">3000</button>
-        <button class="btn ghost small" id="btnReroll" style="margin-left:auto">🔄 换一批马</button>
-      </div>
-      <button class="btn" id="btnStartBet" style="width:100%;padding:14px;font-size:16px">
-        🏁 开始比赛
-      </button>
+   <button class="btn" id="btnStartBetRace" style="width:100%;padding:11px;font-size:14px">🏁 开始比赛</button>
+</div>
+      
     </div>
   </div>
+</div>
+
+<div id="betHud" class="hidden">
+  <div class="bh-t">💰 投注金额（上限 500）</div>
+  <div class="bh-chips">
+    <button class="chip on" data-amt="50">50</button>
+    <button class="chip" data-amt="100">100</button>
+    <button class="chip" data-amt="200">200</button>
+    <button class="chip" data-amt="500">500</button>
+  </div>
+  <div class="bh-sel" id="betHudSel">点击马匹右侧「投注」按钮选马</div>
+  <button class="btn" id="btnStartBetRaceHud" style="width:100%;padding:11px;font-size:14px">🏁 开始比赛</button>
+  <button class="btn ghost" id="btnExitBetHud" style="width:100%;padding:9px;font-size:13px;margin-top:8px">🚪 退出赌马场</button>
 </div>
 
 <div id="resultOverlay" class="overlay hidden">
   <div class="card" style="max-width:560px">
     <div class="card-body">
-      <div class="result" id="resultBody"><div class="big">🥈 第 2 名</div><div class="sub">屈居亚军　获得 🪙 200</div><div class="plist"><div class="prow "><span class="place">🥇</span><span class="pn">拖鞋·大王　摔倒1次</span><span class="pt">16.43s　(0/2场)</span></div><div class="prow me"><span class="place">🥈</span><span class="pn">银河 (你)</span><span class="pt">16.60s　(1/2场)</span></div><div class="prow "><span class="place">🥉</span><span class="pn">赤兔　摔倒3次</span><span class="pt">未完赛　(0/2场)</span></div><div class="prow "><span class="place">4️⃣</span><span class="pn">飞雪　摔倒3次</span><span class="pt">未完赛　(0/2场)</span></div></div></div>
+      <div class="result" id="resultBody"><div class="big">🥇 第 1 名</div><div class="sub">冲线夺冠！　获得💰400</div><div class="plist"><div class="prow me"><span class="place">🥇</span><span class="pn">彩虹·MAX (你)　摔倒1次</span><span class="pt">17.70s　(2/2场)</span></div><div class="prow "><span class="place">🥈</span><span class="pn">冰霜　摔倒1次</span><span class="pt">18.36s　(0/2场)</span></div><div class="prow "><span class="place">🥉</span><span class="pn">暗影　摔倒1次</span><span class="pt">未完赛　(0/2场)</span></div><div class="prow "><span class="place">4️⃣</span><span class="pn">西瓜·小可爱　摔倒4次</span><span class="pt">未完赛　(0/2场)</span></div></div></div>
       <button class="btn" id="btnCloseResult" style="width:100%;padding:14px" data-from-bet="0">回 到 原 野</button>
     </div>
   </div>
@@ -1620,11 +1686,21 @@ function updateWildHorse(h, dt){
 
 /* ============================== 玩家控制 ============================== */
 const keys = {};
+
+/* ★ 手机端虚拟摇杆状态 */
+const touchMove = { active:false, id:null, sx:0, sy:0, nx:0, ny:0, moved:false, startT:0 };
+const TOUCH_DEAD   = 14;   // 超过这个位移才算"滑动"
+const TOUCH_RADIUS = 64;   // 摇杆满速半径
+function resetTouchMove(){
+  touchMove.active = false; touchMove.id = null; touchMove.moved = false;
+  touchMove.nx = 0; touchMove.ny = 0;
+}
 window.addEventListener('keydown', e => {
   keys[e.key.toLowerCase()] = true;
   if (e.code === 'Space'){
     e.preventDefault();
-    if (G.capture && !G.capture.done) tapCapture();
+    /* ★ 空格只推进进度条，不传坐标 → 永远不参与 QTE 命中 */
+    if (G.capture && !G.capture.done) tapCapture(null, null);
   }
 });
 window.addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; });
@@ -1636,8 +1712,13 @@ function updatePlayer(dt){
   if (keys['s']||keys['arrowdown']) iy += 1;
   if (keys['a']||keys['arrowleft']) ix -= 1;
   if (keys['d']||keys['arrowright']) ix += 1;
+  /* ★ 手机端：摇杆方向覆盖键盘输入（保留力度比例） */
+  if (touchMove.active && touchMove.moved){
+    ix = touchMove.nx;
+    iy = touchMove.ny;
+  }
   const len = Math.hypot(ix,iy);
-  if (len>0){ ix/=len; iy/=len; }
+  if (len>1){ ix/=len; iy/=len; }
 
   const wantSprint = keys['shift'] && p.stamina > 0.05;
   const sp = wantSprint ? 340 : 205;
@@ -1689,14 +1770,34 @@ function updateLasso(dt){
 }
 function startCapture(h){
   h.frozen = true;
-  G.capture = { horse: h, meter: 0, time: 0, dur: 2.6, done: false };
+  G.capture = {
+    horse: h, meter: 0, time: 0, dur: 3.0, done: false,
+    qte: null, qteTimer: 0.5, qteGap: 0.3
+  };
   document.getElementById('capUI').classList.remove('hidden');
   document.getElementById('capFill').style.width = '0%';
 }
-function tapCapture(){
+function tapCapture(px, py){
   const c = G.capture;
   if (!c || c.done) return;
+  const now = performance.now();
+  if (now - (c.lastTap || 0) < 50) return;
+  c.lastTap = now;
   c.meter = Math.max(0, c.meter - 6);
+
+  /* ★ 只有真实指针坐标（鼠标 / 触摸）才能命中 QTE；空格传 null 会被过滤掉 */
+  const hasPoint = (typeof px === 'number') && (typeof py === 'number')
+                && isFinite(px) && isFinite(py);
+  if (c.qte && !c.qte.done && hasPoint){
+    const k  = clamp(c.qte.t / c.qte.win, 0, 1);
+    const rr = lerp(52, 18, k);
+    const cx = W * c.qte.x;
+    const cy = H * c.qte.y;
+    if (Math.hypot(px - cx, py - cy) <= rr){
+      c.qte.done = true;
+      c.qte.hitAt = now;
+    }
+  }
 }
 function updateCapture(dt){
   const c = G.capture;
@@ -1705,10 +1806,26 @@ function updateCapture(dt){
   const g = effGenes(c.horse);
   c.meter += (30 + g.muscle*0.55) * dt;
   document.getElementById('capFill').style.width = clamp(c.meter,0,100)+'%';
+
+  /* ★ QTE：光圈必须在窗口内被点掉，漏一个马直接挣脱 */
+  if (c.qte){
+    c.qte.t += dt;
+    if (c.qte.t >= c.qte.win){
+      if (!c.qte.done){ c.done = true; finishCapture(false, true); return; }
+      c.qte = null;
+      c.qteTimer = c.qteGap;
+    }
+  } else {
+    c.qteTimer -= dt;
+    if (c.qteTimer <= 0 && c.time < c.dur - 0.9){
+      c.qte = { t:0, win:1.2, done:false, x: rnd(0.22,0.78), y: rnd(0.30,0.62) };
+    }
+  }
+
   if (c.meter >= 100){ c.done = true; finishCapture(false); }
   else if (c.time >= c.dur){ c.done = true; finishCapture(true); }
 }
-function finishCapture(success){
+function finishCapture(success, qteFail){
   const c = G.capture;
   const h = c.horse;
   if (success){
@@ -1732,7 +1849,9 @@ function finishCapture(success){
     }
   } else {
     h.frozen = false; h.state = 'flee'; h.run = 1;
-    toast('💨 「'+h.name+'」挣脱了套索，跑了！', 1800);
+    toast(qteFail
+      ? '❌ 手慢了！「'+h.name+'」趁你没抓住 QTE 挣脱跑了！'
+      : '💨 「'+h.name+'」挣脱了套索，跑了！', 1800);
   }
   setTimeout(() => {
     G.capture = null;
@@ -1911,6 +2030,39 @@ function renderWorld(){
 
   drawStaminaBar();
   drawRadar();
+  drawCaptureQTE();
+}
+
+/* ★ 套马 QTE：收缩光圈，必须在窗口内点击 / 敲空格 */
+function drawCaptureQTE(){
+  const c = G.capture;
+  if (!c || !c.qte || c.done) return;
+  const q = c.qte;
+  const k = clamp(q.t / q.win, 0, 1);
+  const cx = W * q.x;
+  const cy = H * q.y;
+  const r  = lerp(73, 30, k);
+  const hit = !!q.done;
+
+  ctx.save();
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  ctx.fillStyle = 'rgba(0,0,0,0.35)';
+  ctx.beginPath(); ctx.arc(cx, cy, r, 0, TAU); ctx.fill();
+
+  ctx.lineWidth = 7;
+  ctx.strokeStyle = hit ? 'rgba(99,230,190,0.95)' : 'rgba(255,217,61,0.95)';
+  ctx.beginPath(); ctx.arc(cx, cy, r, 0, TAU); ctx.stroke();
+
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = hit ? 'rgba(99,230,190,0.85)' : 'rgba(255,107,107,0.9)';
+  ctx.beginPath(); ctx.arc(cx, cy, 30, 0, TAU); ctx.stroke();
+
+  ctx.fillStyle = hit ? '#63e6be' : '#ffd93d';
+  ctx.font = '900 19px system-ui,sans-serif';
+  ctx.fillText(hit ? '✅ 命中' : '点击光圈', cx, cy);
+  ctx.restore();
 }
 
 function drawStaminaBar(){
@@ -1974,6 +2126,11 @@ function startRace(playerHorse){
       (playerHorse.singleRace ? '是繁育马，只能参赛 1 次' : '已经跑满 2 场啦，让它休息吧'), 2000);
     return;
   }
+  /* ★ 参赛报名费 50 金币 */
+  if (G.coins < 50){ toast('🪙 报名费 50 金币，金币不足', 1800); return; }
+  G.coins -= 50;
+  updateHUD();
+  toast('🪙 支付报名费 50 金币', 1200);
   const entries = [playerHorse];
   for (let i=0;i<3;i++) entries.push(makeHorse('horse'));
   const lanes = [0,1,2,3].sort(function(){ return Math.random()-0.5; });
@@ -1990,7 +2147,8 @@ function startRace(playerHorse){
       _facing: 1
     });
   }
-  G.race = { horses: horses, time: 0, countdown: 2.6, ended: false, holdStarted: null };
+  G.race = { horses: horses, time: 0, countdown: 2.6, ended: false, holdStarted: null, winBtnShown: false };
+  showSkipRaceBtn(false);
   G.mode = 'race';
   G.paused = false;
   document.getElementById('tip').textContent = '全程自动奔跑，看谁能冲线！';
@@ -2056,8 +2214,9 @@ function updateRacer(r, dt){
 function updateRace(dt){
   const R = G.race;
   if (!R || R.ended) return;
+  if (R.betting) return;                       // ★ 下注阶段不推进
   if (R.countdown > 0){ R.countdown -= dt; return; }
-  R.time += dt;
+  R.time += dt;                                // ★ 补上计时推进（否则永不移动）
 
   let ply = null;
   for (let i=0;i<R.horses.length;i++) if (R.horses[i].isPlayer) ply = R.horses[i];
@@ -2071,6 +2230,20 @@ function updateRace(dt){
   }
 
   if (ply && ply.finished && R.holdStarted === null) R.holdStarted = R.time;
+
+  /* ★ 只要决出第一名，就弹出「直接结算」按钮（赛马 / 赌马通用） */
+  if (!R.winBtnShown){
+    let winner = null;
+    for (let i=0;i<R.horses.length;i++){
+      const r = R.horses[i];
+      if (r.finished && (!winner || r.finishTime < winner.finishTime)) winner = r;
+    }
+    if (winner){
+      R.winBtnShown = true;
+      const mine = R.isBetRace ? (winner.data === R.betHorse) : winner.isPlayer;
+      showSkipRaceBtn(true, !!R.isBetRace, mine);
+    }
+  }
   if (R.holdStarted !== null && R.time - R.holdStarted > 4){
     for (let i=0;i<R.horses.length;i++){
       const r = R.horses[i];
@@ -2096,17 +2269,31 @@ function updateRace(dt){
 
 function endRace(){
   const R = G.race;
+  showSkipRaceBtn(false);
   const sorted = R.horses.slice().sort(function(a,b){ return a.finishTime - b.finishTime; });
+  if (R.isBetRace){ endBetRace(sorted); return; }   // ★ 赌马结算
   let playerIdx = 0;
   for (let i=0;i<sorted.length;i++) if (sorted[i].isPlayer) playerIdx = i;
   const rank = playerIdx + 1;
-  const prizeTable = [400, 200, 110, 60];
-  const prize = prizeTable[playerIdx] !== undefined ? prizeTable[playerIdx] : 30;
-  G.coins += prize;
+  /* ★ 只有第一名有奖金 */
+  const prize = (rank === 1) ? 400 : 0;
+  if (prize > 0) G.coins += prize;
 
   const pm = sorted[playerIdx].data;
   pm.raceCount = (pm.raceCount || 0) + 1;
   if (rank === 1) pm.wins = (pm.wins || 0) + 1;
+
+  /* ★ 赛马结束：马厩所有马匹年龄 +1；10~15 岁随机死亡 */
+  const deadNames = [];
+  for (let i=0;i<G.stable.length;i++){
+    const h = G.stable[i];
+    h.age++;
+    if (h.dead) continue;
+    if (h.deathAge === undefined) h.deathAge = Math.max(rndi(10,15), h.age + 1);
+    if (h.age >= h.deathAge){ h.dead = true; deadNames.push(h.name); }
+  }
+  if (deadNames.length) toast('💀 '+deadNames.join('、')+' 寿终正寝（售价降为 1/4）', 3000);
+
   updateHUD();
   showResult(sorted, rank, prize);
 }
@@ -2115,8 +2302,9 @@ function showResult(sorted, rank, prize){
   const body = document.getElementById('resultBody');
   const medals = ['🥇','🥈','🥉','4️⃣'];
   const titles = ['冲线夺冠！','屈居亚军','拿下季军','下次一定'];
+  const prizeTxt = prize > 0 ? '　获得💰'+prize : '　没有奖金';
   let html = '<div class="big">'+medals[rank-1]+' 第 '+rank+' 名</div>' +
-    '<div class="sub">'+(titles[rank-1]||'')+'　获得 🪙 '+prize+'</div><div class="plist">';
+    '<div class="sub">'+(titles[rank-1]||'')+prizeTxt+'</div><div class="plist">';
   for (let i=0;i<sorted.length;i++){
     const r = sorted[i];
     const t = r.finishTime >= 900 ? '未完赛' : r.finishTime.toFixed(2)+'s';
@@ -2302,7 +2490,8 @@ function renderRace(){
   /* ---------- 布局 ---------- */
   const padTop = 104, padBot = 82, padX = 48;
   const trackH = (H - padTop - padBot) / 4;
-  const x0 = padX, x1 = W - padX;
+  const x0 = padX;
+  const x1 = W - padX - (R.betting ? 280 : 0);   // ★ 下注时给右侧面板让位
   const sc = clamp(trackH/172, 0.48, 0.95);
 
   /* ---------- 场地边缘森林 ---------- */
@@ -2406,7 +2595,7 @@ function renderRace(){
     const ly = padTop + trackH*i;
     const cy = ly + trackH*0.5;
 
-    const isMe = r.isPlayer;
+    const isMe = r.isPlayer || !!(R.isBetRace && R.betHorse && r.data === R.betHorse);
     const col = isMe ? '#ffd93d' : 'rgba(120,200,175,0.75)';
 
     /* 跑道底 */
@@ -2472,6 +2661,8 @@ function renderRace(){
     ctx.fillStyle = isMe ? '#ffd93d' : 'rgba(200,225,215,0.62)';
     ctx.fillText(r.data.name, x0 + 16, ly + 20);
 
+    if (R.betting) continue;                    // ★ 下注阶段不画名次徽章
+
     /* 名次徽章（右端） */
     const bx = x1 + 22;
     ctx.beginPath();
@@ -2486,6 +2677,37 @@ function renderRace(){
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(String(r._rank), bx, cy + 0.5);
+  }
+
+  /* ---------- 下注阶段：画投注按钮并跳过玩家 HUD ---------- */
+  if (R.betting){
+    R.betButtons = [];
+    const bw = 100, bh = 40;
+    const bx = x1 + 26;
+    for (let i=0;i<R.horses.length;i++){
+      const rr = R.horses[i];
+      const cy = padTop + trackH*i + trackH*0.5;
+      const by = cy - bh/2;
+      const sel = (R.betHorse === rr.data);
+      roundRect(ctx, bx, by, bw, bh, 12);
+      ctx.fillStyle = sel ? 'rgba(255,217,61,0.92)' : 'rgba(8,20,14,0.82)';
+      ctx.fill();
+      ctx.strokeStyle = sel ? '#ffd93d' : 'rgba(255,217,61,0.45)';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.fillStyle = sel ? '#20180a' : '#ffd93d';
+      ctx.font = '900 15px system-ui,sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(sel ? '✓ 已选' : '投注', bx + bw/2, cy);
+      R.betButtons.push({ x: bx, y: by, w: bw, h: bh, horse: rr.data });
+    }
+
+    const vgB = ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*0.42,W/2,H/2,Math.max(W,H)*0.85);
+    vgB.addColorStop(0,'rgba(0,0,0,0)');
+    vgB.addColorStop(1,'rgba(0,0,0,0.55)');
+    ctx.fillStyle = vgB; ctx.fillRect(0,0,W,H);
+    return;
   }
 
   /* ---------- 顶部信息 ---------- */
@@ -2518,7 +2740,9 @@ function renderRace(){
   ctx.fillStyle = 'rgba(255,255,255,0.32)';
   ctx.font = '800 11px ui-monospace,monospace';
   ctx.textAlign = 'center';
-  ctx.fillText('PROGRESS  ' + Math.round(R.horses.find(function(h){return h.isPlayer;}).x / RACE_LEN * 100) + '%',
+  const _lead = R.horses.find(function(h){ return h.isPlayer; }) ||
+                R.horses.slice().sort(function(a,b){ return b.x - a.x; })[0];
+  ctx.fillText('PROGRESS  ' + Math.round(clamp(_lead.x / RACE_LEN * 100, 0, 100)) + '%',
                W/2, 40);
   ctx.restore();
 
@@ -2570,6 +2794,21 @@ function renderRace(){
   _raceHud(R, sc, '#ffd93d');
 }
 
+/* ★ 提前结算按钮 */
+function showSkipRaceBtn(on, isBet, mine){
+  const b = document.getElementById('btnSkipRace');
+  if (!b) return;
+  if (on){
+    /* ★ 押中 / 自己夺冠保留原文案；名次已定则显示通用结算 */
+    b.textContent = mine
+      ? (isBet ? '🎉 押中了！直接结算' : '🏆 夺冠！直接结算')
+      : '🏁 名次已定 · 直接结算';
+    b.style.display = 'block';
+  } else {
+    b.style.display = 'none';
+  }
+}
+
 /* ============================== 基础 UI ============================== */
 let toastTimer = null;
 function toast(msg, ms){
@@ -2611,18 +2850,55 @@ function renderHorseThumb(canvas, h){
 function renderStable(){
   const grid = document.getElementById('stableGrid');
   grid.innerHTML = '';
-  document.getElementById('stableSub').textContent = '共 ' + G.stable.length + ' 匹';
+
+  /* ★ 读取筛选 / 排序条件 */
+  const kindEl   = document.getElementById('stableKind');
+  const genderEl = document.getElementById('stableGender');
+  const sortEl   = document.getElementById('stableSort');
+  const kindF    = kindEl   ? kindEl.value   : 'all';
+  const genderF  = genderEl ? genderEl.value : 'all';
+  const sortF    = sortEl   ? sortEl.value   : 'power';
+
+  let pool = G.stable.slice();
+  if (kindF   !== 'all') pool = pool.filter(function(h){ return h.kind   === kindF;   });
+  if (genderF !== 'all') pool = pool.filter(function(h){ return h.gender === genderF; });
+
+  const sorters = {
+    power:     function(h){ return horsePower(h); },
+    muscle:    function(h){ return effGenes(h).muscle; },
+    stamina:   function(h){ return effGenes(h).stamina; },
+    balance:   function(h){ return effGenes(h).balance; },
+    luck:      function(h){ return effGenes(h).luck; },
+    height:    function(h){ return h.genes.height; },
+    legLength: function(h){ return h.genes.legLength; },
+    weight:    function(h){ return h.genes.weight; },
+    age:       function(h){ return h.age; },
+    wins:      function(h){ return h.wins || 0; },
+    weirdness: function(h){ return h.weirdness || 0; },
+    price:     function(h){ return horsePrice(h); }
+  };
+  const keyFn = sorters[sortF] || sorters.power;
+  const list = pool.sort(function(a,b){ return keyFn(b) - keyFn(a); });
+
+  document.getElementById('stableSub').textContent =
+    '共 ' + G.stable.length + ' 匹' +
+    (list.length !== G.stable.length ? '（显示 ' + list.length + ' 匹）' : '');
+
   if (!G.stable.length){
     grid.innerHTML = '<div class="empty"><div class="big">🐴</div>' +
       '马厩空空如也<br>去原野上套几匹野马吧！</div>';
     return;
   }
-  const list = G.stable.slice().sort(function(a,b){ return horsePower(b) - horsePower(a); });
+  if (!list.length){
+    grid.innerHTML = '<div class="empty"><div class="big">🔍</div>' +
+      '没有符合条件的马<br>换个筛选条件试试</div>';
+    return;
+  }
 
   for (let idx=0; idx<list.length; idx++){
     const h = list[idx];
     const g = effGenes(h);
-    const price = horsePrice(h);
+    const price = h.dead ? Math.max(1, Math.round(horsePrice(h)/4)) : horsePrice(h);
     const bal = balanceLabel(g.balance);
     const M = moveStyleOf(h.look.shape);
     const maxR = h.singleRace ? 1 : MAX_RACES;   // ★ 繁育马只跑 1 次
@@ -2640,10 +2916,17 @@ function renderStable(){
         '<span class="sval">'+Math.round(val)+'</span></div>';
     }
 
-    const raceBtnDisabled = raceLeft <= 0;
-    const raceBtnLabel = raceBtnDisabled
-      ? '⛔ 已跑满 '+maxR+' 场'
-      : '🏁 参赛 (' + (h.raceCount||0) + '/' + maxR + ')';
+    const deadTag = h.dead
+      ? '<span class="rtag" style="background:rgba(255,107,107,.18);color:#ff8787;border-color:rgba(255,107,107,.45)">💀 已故</span>'
+      : '';
+    const raceBtnDisabled = raceLeft <= 0 || !!h.dead;
+    const raceBtnLabel = h.dead
+      ? '💀 已故'
+      : (raceLeft <= 0
+          ? '⛔ 已跑满 '+maxR+' 场'
+          : '🏁 参赛 (' + (h.raceCount||0) + '/' + maxR + ')');
+    const renameBtn = h.canRename
+      ? '<button class="btn small blue act-rename">✏️ 改名 20</button>' : '';
 
     const kindTag = h.kind !== 'horse'
       ? '<span class="ktag">'+KIND_LABEL[h.kind]+' 彩蛋</span>' : '';
@@ -2658,7 +2941,7 @@ function renderStable(){
         '<div style="flex:1;min-width:0">' +
           '<div class="hname">' +
             '<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+h.name+'</span>' +
-            kindTag + genTag2 + genTag +
+            kindTag + deadTag + genTag2 + genTag +
             '<span class="rtag">'+weirdLabel(h.weirdness)+'</span>' +
             '<span class="'+ageTagClass(h.age)+'">'+h.age+'岁 · '+ageLabel(h.age)+'</span>' +
           '</div>' +
@@ -2679,6 +2962,7 @@ function renderStable(){
       bar('腿长', legPct, 'linear-gradient(90deg,#63e6be,#4dabf7)') +
       '<div class="acts">' +
         '<button class="btn small act-race"'+(raceBtnDisabled?' disabled':'')+'>'+raceBtnLabel+'</button>' +
+        renameBtn +
         '<button class="btn small red act-sell">💰 卖 '+price+'</button>' +
       '</div>';
 
@@ -2701,6 +2985,22 @@ function renderStable(){
       renderStable();
       toast('💰 卖出「'+h.name+'」，获得 '+price+' 金币', 1500);
     };
+
+    if (h.canRename){
+      card.querySelector('.act-rename').onclick = function(){
+        if (G.coins < 20){ toast('🪙 金币不足，改名需要 20 金币', 1600); return; }
+        const nv = prompt('给「'+h.name+'」起个新名字（花费 20 金币，仅限一次）', h.name);
+        if (nv === null) return;
+        const nn = String(nv).trim();
+        if (!nn){ toast('✏️ 名字不能为空', 1400); return; }
+        G.coins -= 20;
+        h.name = nn.slice(0, 12);
+        h.canRename = false;
+        updateHUD();
+        renderStable();
+        toast('✏️ 已改名为「'+h.name+'」', 1600);
+      };
+    }
   }
 }
 
@@ -2737,7 +3037,7 @@ function renderBreed(){
     return;
   }
 
-  const list = G.stable.slice().sort(function(a,b){ return horsePower(b) - horsePower(a); });
+  const list = G.stable.filter(function(h){ return !h.dead; }).sort(function(a,b){ return horsePower(b) - horsePower(a); });
 
   for (let i=0;i<list.length;i++){
     (function(h){
@@ -2805,6 +3105,7 @@ function doBreed(){
   if (G.breedJob){ toast('🧬 育马房里正忙着呢，先等等吧', 1800); return; }
   if (G.herbCount <= 0){ toast('🌿 没有育马灵草了！去商店买吧', 1800); return; }
   if (f === m){ toast('🧬 同一匹马不能自交哦', 1600); return; }
+  if (f.dead || m.dead){ toast('💀 已故的马无法参与繁育', 1600); return; }
 
   G.herbCount--;
   G.breedJob = {
@@ -2827,6 +3128,7 @@ function updateBreedJob(){
   const child = breedHorses(J.father, J.mother);
   child.singleRace = true;          // ★ 繁育马只能参赛 1 次
   child.racesLeft  = 1;
+  child.canRename  = true;          // ★ 繁育马可花 20 金币改名一次
   G.stable.push(child);
   J.child = child;
   J.claimed = true;
@@ -2966,22 +3268,23 @@ function renderShop(){
 
   /* 训练目标下拉 */
   const prevVal = G.shopTargetUid;
+  const alive = G.stable.filter(function(h){ return !h.dead; });
   sel.innerHTML = '';
-  if (!G.stable.length){
+  if (!alive.length){
     const o = document.createElement('option');
     o.value = ''; o.textContent = '（马厩为空）';
     sel.appendChild(o);
   } else {
-    for (let i=0;i<G.stable.length;i++){
-      const h = G.stable[i];
+    for (let i=0;i<alive.length;i++){
+      const h = alive[i];
       const o = document.createElement('option');
       o.value = h.uid;
       o.textContent = h.name + ' · ' + GENDER_LABEL[h.gender];
       if (G.shopTargetUid === h.uid) o.selected = true;
       sel.appendChild(o);
     }
-    if (!G.shopTargetUid || !G.stable.find(function(x){ return x.uid === G.shopTargetUid; })){
-      G.shopTargetUid = G.stable[0].uid;
+    if (!G.shopTargetUid || !alive.find(function(x){ return x.uid === G.shopTargetUid; })){
+      G.shopTargetUid = alive[0].uid;
       sel.value = G.shopTargetUid;
     }
   }
@@ -3013,7 +3316,7 @@ function buyItem(it, needTarget){
 
   if (needTarget){
     if (!G.stable.length){ toast('🎯 马厩里没有可训练的马', 1600); return; }
-    const target = G.stable.find(function(x){ return x.uid === G.shopTargetUid; });
+    const target = G.stable.find(function(x){ return x.uid === G.shopTargetUid && !x.dead; });
     if (!target){ toast('🎯 请选择训练目标', 1500); return; }
 
     G.coins -= it.price;
@@ -3091,66 +3394,94 @@ function renderBet(){
     : '已选：'+G.bet.list[G.bet.sel].name+'　下注 '+G.bet.amount+'　赔率 ×'+odds[G.bet.sel].toFixed(2);
 }
 
-function startBetRace(){
-  if (G.bet.sel < 0){ toast('🎰 请先选择一匹马', 1600); return; }
-  if (G.coins < G.bet.amount){ toast('🪙 金币不足以支付下注', 1600); return; }
+/* 打开赌马跑道（4 匹随机马站在跑道上，右侧是投注面板） */
+function openBetTrack(){
+  const entries = [];
+  for (let i=0;i<4;i++) entries.push(makeHorse('horse'));
+  G.bet.list = entries;
+  G.bet.sel = -1;
+  G.bet.amount = 50;
 
-  G.coins -= G.bet.amount;
-  updateHUD();
+  G.bet.odds = entries.map(function(h){
+    const p = horsePower(h);
+    return Math.max(1.15, (260 / (p + 120)) * rnd(0.85, 1.15));
+  });
 
-  const list = G.bet.list;
-  // 自动跑：用与正式比赛同样的模拟逻辑
-  const hs = [];
-  for (let i=0;i<list.length;i++){
-    hs.push({
-      data: list[i], x: 0, v: 0, legPhase: Math.random()*10, fatigue: 0,
-      finished: false, finishTime: 0,
+  const horses = [];
+  for (let i=0;i<4;i++){
+    horses.push({
+      data: entries[i], lane: i,
+      x: 0, v: 0, legPhase: Math.random()*10, fatigue: 0,
+      finished: false, finishTime: 0, isPlayer: false,
       reaction: 0.15 + Math.random()*0.35,
       noiseSeed: Math.random()*100,
       fallen: false, fallTimer: 0, fallCount: 0,
-      _facing: 1, lane: i
+      _facing: 1
     });
   }
 
-  // 简单的无渲染模拟，跑完后弹出结果
-  let t = 0;
-  let done = false;
-  while (t < 60 && !done){
-    t += 0.016;
-    let all = true;
-    for (let i=0;i<hs.length;i++){
-      const r = hs[i];
-      if (r.finished){ continue; }
-      all = false;
-      updateRacerVirtual(r, 0.016, t);
-    }
-    if (all) done = true;
+  G.race = {
+    horses: horses, time: 0, countdown: 2.6, ended: false,
+    betting: true, betHorse: null, betAmount: 50, betOdds: 0,
+    holdStarted: null, isBetRace: true, betButtons: [], winBtnShown: false
+  };
+  showSkipRaceBtn(false);
+  G.mode = 'race';
+  G.paused = false;
+
+  const hud = document.getElementById('betHud');
+  hud.classList.remove('hidden');
+  const chips = hud.querySelectorAll('.chip');
+  for (let i=0;i<chips.length;i++){
+    chips[i].classList.toggle('on', parseInt(chips[i].dataset.amt,10) === 50);
   }
+  document.getElementById('betHudSel').textContent = '点击马匹右侧「投注」按钮选马';
+  document.getElementById('tip').textContent = '选一匹马下注（上限 500），然后点「开始比赛」';
+}
 
-  hs.sort(function(a,b){ return (a.finishTime || 999) - (b.finishTime || 999); });
-  const win = hs[0];
-  const myHorse = list[G.bet.sel];
-  const iWin = (win.data === myHorse);
-  const odds = G.bet.odds[G.bet.sel];
+/* 从赌马界面正式开跑 */
+function startBetRun(){
+  const R = G.race;
+  if (!R || !R.betting) return;
+  if (!R.betHorse){ toast('🎰 请先点击一匹马右侧的「投注」按钮', 1700); return; }
+  if (G.coins < R.betAmount){ toast('🪙 金币不足以支付下注', 1600); return; }
 
+  G.coins -= R.betAmount;
+  updateHUD();
+
+  const idx = R.horses.findIndex(function(r){ return r.data === R.betHorse; });
+  R.betOdds = G.bet.odds[idx] || 1.2;
+  R.betting = false;
+  R.countdown = 2.6;
+  R.time = 0;
+
+  document.getElementById('betHud').classList.add('hidden');
+  document.getElementById('tip').textContent = '全程自动奔跑，看谁能冲线！';
+}
+
+/* 赌马结算 */
+function endBetRace(sorted){
+  const R = G.race;
+  const win = sorted[0];
+  const iWin = (win.data === R.betHorse);
+  const odds = R.betOdds || 1.2;
   let payout = 0;
   if (iWin){
-    payout = Math.round(G.bet.amount * odds);
+    payout = Math.round(R.betAmount * odds);
     G.coins += payout;
   }
   updateHUD();
 
-  /* 结果展示 */
   const body = document.getElementById('resultBody');
   const medals = ['🥇','🥈','🥉','4️⃣'];
   let html = '<div class="big">'+(iWin?'🎉 你押中了！':'😢 没押中')+'</div>' +
-    '<div class="sub">下注 '+G.bet.amount+(iWin?'　赔率 ×'+odds.toFixed(2)+'　获得 🪙 '+payout:'　损失 🪙 '+G.bet.amount)+'</div>' +
+    '<div class="sub">下注 '+R.betAmount+(iWin?'　赔率 ×'+odds.toFixed(2)+'　获得 🪙 '+payout:'　损失 🪙 '+R.betAmount)+'</div>' +
     '<div class="plist">';
-  for (let i=0;i<hs.length;i++){
-    const r = hs[i];
+  for (let i=0;i<sorted.length;i++){
+    const r = sorted[i];
     const tS = r.finishTime >= 900 ? '未完赛' : r.finishTime.toFixed(2)+'s';
     const fallTxt = r.fallCount > 0 ? '　摔倒'+r.fallCount+'次' : '';
-    const isMine = (r.data === myHorse);
+    const isMine = (r.data === R.betHorse);
     html += '<div class="prow '+(isMine?'me':'')+'">' +
       '<span class="place">'+(medals[i]||(i+1))+'</span>' +
       '<span class="pn">'+r.data.name+(isMine?' (你押的)':'')+fallTxt+'</span>' +
@@ -3213,14 +3544,84 @@ function updateRacerVirtual(r, dt, t){
 }
 
 /* ============================== 交互绑定 ============================== */
-cvs.addEventListener('pointerdown', function(){
+/* ★ 鼠标/触摸点击屏幕任意位置都减少捕捉进度 */
+document.addEventListener('pointerdown', function(e){
+  if (!G.capture || G.capture.done) return;
+  const r = cvs.getBoundingClientRect();
+  tapCapture(e.clientX - r.left, e.clientY - r.top);
+}, true);
+
+cvs.addEventListener('pointerdown', function(e){
+  /* 赌马下注阶段：点击马匹右侧的「投注」按钮 */
+  if (G.mode === 'race' && G.race && G.race.betting){
+    const rect = cvs.getBoundingClientRect();
+    const mx = (e.clientX - rect.left);
+    const my = (e.clientY - rect.top);
+    const btns = G.race.betButtons || [];
+    for (let i=0;i<btns.length;i++){
+      const b = btns[i];
+      if (mx >= b.x && mx <= b.x + b.w && my >= b.y && my <= b.y + b.h){
+        G.race.betHorse = b.horse;
+        const idx = G.race.horses.findIndex(function(r){ return r.data === b.horse; });
+        const odds = (G.bet.odds && G.bet.odds[idx]) || 1.2;
+        document.getElementById('betHudSel').innerHTML =
+          '已选：<b>'+b.horse.name+'</b><br>赔率 ×'+odds.toFixed(2);
+        return;
+      }
+    }
+    return;
+  }
+
   if (G.paused) return;
   if (G.mode !== 'world') return;
   if (G.capture){
-    if (!G.capture.done) tapCapture();
+    const r = cvs.getBoundingClientRect();
+    if (!G.capture.done) tapCapture(e.clientX - r.left, e.clientY - r.top);
     return;
   }
+
+  /* ★ 手指触摸：先进入摇杆模式，抬起时若几乎没滑动才视为"点击甩套索" */
+  if (e.pointerType === 'touch'){
+    touchMove.id = e.pointerId;
+    touchMove.active = true;
+    touchMove.moved = false;
+    touchMove.sx = e.clientX;
+    touchMove.sy = e.clientY;
+    touchMove.nx = 0;
+    touchMove.ny = 0;
+    touchMove.startT = performance.now();
+    try { cvs.setPointerCapture(e.pointerId); } catch(_){}
+    return;
+  }
+
   tryThrowLasso();
+});
+
+/* ★ 摇杆移动 / 抬手判定 */
+cvs.addEventListener('pointermove', function(e){
+  if (!touchMove.active || e.pointerId !== touchMove.id) return;
+  const dx = e.clientX - touchMove.sx;
+  const dy = e.clientY - touchMove.sy;
+  const d  = Math.hypot(dx, dy);
+  if (!touchMove.moved && d > TOUCH_DEAD) touchMove.moved = true;
+  if (touchMove.moved && d > 0.001){
+    const k = Math.min(1, d / TOUCH_RADIUS);
+    touchMove.nx = dx / d * k;
+    touchMove.ny = dy / d * k;
+  }
+  if (e.cancelable) e.preventDefault();
+}, { passive:false });
+
+cvs.addEventListener('pointerup', function(e){
+  if (!touchMove.active || e.pointerId !== touchMove.id) return;
+  const wasMoved = touchMove.moved;
+  const held = performance.now() - (touchMove.startT || 0);
+  resetTouchMove();
+  if (!wasMoved && held < 320 && G.mode === 'world' && !G.paused && !G.capture) tryThrowLasso();
+});
+
+cvs.addEventListener('pointercancel', function(e){
+  if (e.pointerId === touchMove.id) resetTouchMove();
 });
 
 document.getElementById('btnStable').onclick = function(){
@@ -3233,6 +3634,29 @@ document.getElementById('btnCloseStable').onclick = function(){
   document.getElementById('stableOverlay').classList.add('hidden');
   G.paused = false;
 };
+/* ★ 马厩筛选 / 排序 */
+(function(){
+  ['stableKind','stableGender','stableSort'].forEach(function(id){
+    const el = document.getElementById(id);
+    if (el) el.onchange = function(){ renderStable(); };
+  });
+})();
+/* ★ 点击「直接结算」：把所有未冲线的马按当前位置排定名次后立刻结算 */
+document.getElementById('btnSkipRace').onclick = function(){
+  const R = G.race;
+  if (!R || R.ended) return;
+  showSkipRaceBtn(false);
+  for (let i=0;i<R.horses.length;i++){
+    const r = R.horses[i];
+    if (!r.finished){
+      r.finished = true;
+      r.finishTime = 900 + (RACE_LEN - r.x) * 0.1;
+    }
+  }
+  R.ended = true;
+  endRace();
+};
+
 document.getElementById('btnCloseResult').onclick = function(){
   document.getElementById('resultOverlay').classList.add('hidden');
   const fromBet = document.getElementById('btnCloseResult').dataset.fromBet === '1';
@@ -3280,25 +3704,39 @@ document.getElementById('trainTarget').onchange = function(e){
   G.shopTargetUid = parseInt(e.target.value, 10) || null;
 };
 
-/* 赌马场 */
+/* 赌马场：直接进入跑道下注界面 */
 document.getElementById('btnBet').onclick = function(){
   if (G.mode === 'race' || G.mode === 'betResult') return;
-  if (!G.bet.list.length) rollBetList();
-  renderBet();
-  document.getElementById('betOverlay').classList.remove('hidden');
-  G.paused = true;
+  openBetTrack();
 };
-document.getElementById('btnCloseBet').onclick = function(){
-  document.getElementById('betOverlay').classList.add('hidden');
-  G.paused = false;
-};
-document.getElementById('btnReroll').onclick = function(){
-  rollBetList();
-};
-document.getElementById('btnStartBet').onclick = function(){
-  startBetRace();
-  document.getElementById('betOverlay').classList.add('hidden');
-};
+
+(function(){
+  const hud = document.getElementById('betHud');
+  const chips = hud.querySelectorAll('.chip');
+  for (let i=0;i<chips.length;i++){
+    chips[i].onclick = function(){
+      for (let k=0;k<chips.length;k++) chips[k].classList.remove('on');
+      chips[i].classList.add('on');
+      const amt = Math.min(500, parseInt(chips[i].dataset.amt,10) || 50);
+      G.bet.amount = amt;
+      if (G.race) G.race.betAmount = amt;
+    };
+  }
+  document.getElementById('btnStartBetRace').onclick = function(){ startBetRun(); };
+  document.getElementById('btnStartBetRaceHud').onclick = function(){ startBetRun(); };
+
+  document.getElementById('btnExitBetHud').onclick = function(){
+    if (!G.race || !G.race.betting) return;      // 已开跑就不能退了
+    document.getElementById('betHud').classList.add('hidden');
+    G.bet.list = [];
+    G.bet.sel = -1;
+    G.race = null;
+    G.mode = 'world';
+    G.paused = false;
+    document.getElementById('tip').textContent =
+      'WASD / 方向键 移动　·　按住 Shift 冲刺　·　靠近目标点击甩套索';
+  };
+})();
 
 /* 筹码 */
 (function(){
