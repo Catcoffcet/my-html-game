@@ -169,6 +169,23 @@
   .chip:hover{background:rgba(255,255,255,.12)}
   .chip.on{background:rgba(255,217,61,.2);border-color:rgba(255,217,61,.55);color:#ffd93d}
 
+    .breed-card{background:rgba(255,217,61,.07);border:1px solid rgba(255,217,61,.28);
+    border-radius:14px;padding:14px 16px;margin-bottom:14px;text-align:center}
+  .breed-egg{font-size:42px;line-height:1;margin-bottom:8px;display:inline-block;
+    animation:breedPulse 1.2s ease-in-out infinite}
+  .breed-egg.hot{animation:breedPulse .5s ease-in-out infinite,breedShake .3s ease-in-out infinite}
+  @keyframes breedPulse{0%,100%{transform:scale(1);opacity:.85}50%{transform:scale(1.18);opacity:1}}
+  @keyframes breedShake{0%,100%{transform:translateX(0) rotate(0)}25%{transform:translateX(-3px) rotate(-4deg)}75%{transform:translateX(3px) rotate(4deg)}}
+  .breed-title{font-weight:900;font-size:14.5px;color:#ffd93d;margin-bottom:6px}
+  .breed-story{font-size:12.5px;font-weight:700;color:#9fb8aa;line-height:1.7;
+    margin-bottom:10px;min-height:40px}
+  .breed-story b{color:#ffd93d}
+  .breed-bar{height:14px;border-radius:999px;background:rgba(255,255,255,.09);
+    overflow:hidden;border:1px solid rgba(255,255,255,.14)}
+  .breed-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#63e6be,#ffd93d,#ff6bcb)}
+  .breed-time{font-size:12px;font-weight:800;color:#8fa89a;margin-top:8px;
+    font-variant-numeric:tabular-nums}
+  
   @media (max-width:640px){
     .hud-right .btn{padding:7px 10px;font-size:11.5px}
     .pill{font-size:12.5px;padding:6px 11px}
@@ -185,11 +202,11 @@
 
 <div id="hud">
   <div class="hud-left">
-    <div class="pill">🪙 <b id="uiCoins">500</b></div>
-    <div class="pill">🐴 <b id="uiCount">2</b></div>
+  <div class="pill">💰 <b id="uiCoins">700</b></div>
+    <div class="pill">🐴 <b id="uiCount">4</b></div>
     <div class="pill">🏆 <b id="uiWins">0</b></div>
-    <div class="pill">🪢 <b id="uiLasso">3</b></div>
-    <div class="pill">🌿 <b id="uiHerb">1</b></div>
+<div class="pill">➰ <b id="uiLasso">1</b></div>
+    <div class="pill">🌿 <b id="uiHerb">0</b></div>
   </div>
   <div class="hud-right">
     <button class="btn small" id="btnStable" style="font-size: 17px;">🐴 马厩</button>
@@ -199,13 +216,13 @@
   </div>
 </div>
 
-<div id="tip">WASD / 方向键 移动　·　Shift 冲刺　·　靠近目标点击甩套索（消耗 🪢）</div>
-<div id="toast" class="">附近没有目标，先追上去！</div>
+<div id="tip">WASD / 方向键 移动　·　按住 Shift 冲刺　·　靠近目标点击甩套索</div>
+<div id="toast" class="">🧬 育马房里正忙着呢，先等等吧</div>
 
 <div id="capUI" class="hidden">
   <div class="capbox">
     <div class="t">🪢 套住了！疯狂点击挣脱！</div>
-    <div class="capbar"><div class="capfill" id="capFill"></div></div>
+    <div class="capbar"><div class="capfill" id="capFill" style="width: 60.6623%;"></div></div>
     <div class="h">疯狂点击屏幕 / 敲空格键</div>
   </div>
 </div>
@@ -213,30 +230,24 @@
 <div id="stableOverlay" class="overlay hidden">
   <div class="card">
     <div class="card-head">
-      <div class="card-title">🐴 我的马厩 <span id="stableSub">共 0 匹</span></div>
+      <div class="card-title">🐴 我的马厩 <span id="stableSub">共 4 匹</span></div>
       <button class="btn ghost" id="btnCloseStable">关闭 ✕</button>
     </div>
-    <div class="card-body"><div class="grid" id="stableGrid"></div></div>
+    <div class="card-body"><div class="grid" id="stableGrid"><div class="hcard"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">麻花</span><span class="gtag female">♀ 母</span><span class="rtag">非常离谱</span><span class="atag">6岁 · 成熟</span></div><div class="gene">身高 <b>1.49</b>　腿长 <b>1.53</b><br>体重 <b>626kg</b>　性格 <b>普通</b><br>平衡 <b style="color:#ffa94d">摇摇晃晃</b>　胜场 <b>0</b>　参赛 <b>0/2</b><br>步伐 <b style="color:#b197fc">弹弹跳跳</b></div></div></div><div class="srow"><span class="lb">肌肉</span><span class="sbar"><span class="sfill" style="width:59.2%;background:linear-gradient(90deg,#ff8a5c,#ffd93d)"></span></span><span class="sval">59</span></div><div class="srow"><span class="lb">耐力</span><span class="sbar"><span class="sfill" style="width:78.625%;background:linear-gradient(90deg,#4dabf7,#63e6be)"></span></span><span class="sval">79</span></div><div class="srow"><span class="lb">平衡</span><span class="sbar"><span class="sfill" style="width:36.075%;background:linear-gradient(90deg,#ffa94d,#ffa94d)"></span></span><span class="sval">36</span></div><div class="srow"><span class="lb">幸运</span><span class="sbar"><span class="sfill" style="width:65.675%;background:linear-gradient(90deg,#b197fc,#ffd93d)"></span></span><span class="sval">66</span></div><div class="srow"><span class="lb">身高</span><span class="sbar"><span class="sfill" style="width:44%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">44</span></div><div class="srow"><span class="lb">腿长</span><span class="sbar"><span class="sfill" style="width:59%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">59</span></div><div class="acts"><button class="btn small act-race">🏁 参赛 (0/2)</button><button class="btn small red act-sell">💰 卖 74</button></div></div><div class="hcard"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">冰霜</span><span class="gtag male">♂ 公</span><span class="rtag">非常离谱</span><span class="atag">4岁 · 壮年</span></div><div class="gene">身高 <b>2.26</b>　腿长 <b>1.23</b><br>体重 <b>796kg</b>　性格 <b>沉稳</b><br>平衡 <b style="color:#ffa94d">摇摇晃晃</b>　胜场 <b>0</b>　参赛 <b>0/2</b><br>步伐 <b style="color:#b197fc">沉重慢步</b></div></div></div><div class="srow"><span class="lb">肌肉</span><span class="sbar"><span class="sfill" style="width:66.60000000000001%;background:linear-gradient(90deg,#ff8a5c,#ffd93d)"></span></span><span class="sval">67</span></div><div class="srow"><span class="lb">耐力</span><span class="sbar"><span class="sfill" style="width:60.125%;background:linear-gradient(90deg,#4dabf7,#63e6be)"></span></span><span class="sval">60</span></div><div class="srow"><span class="lb">平衡</span><span class="sbar"><span class="sfill" style="width:26.825000000000003%;background:linear-gradient(90deg,#ffa94d,#ffa94d)"></span></span><span class="sval">27</span></div><div class="srow"><span class="lb">幸运</span><span class="sbar"><span class="sfill" style="width:61.975%;background:linear-gradient(90deg,#b197fc,#ffd93d)"></span></span><span class="sval">62</span></div><div class="srow"><span class="lb">身高</span><span class="sbar"><span class="sfill" style="width:66%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">66</span></div><div class="srow"><span class="lb">腿长</span><span class="sbar"><span class="sfill" style="width:47%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">47</span></div><div class="acts"><button class="btn small act-race">🏁 参赛 (0/2)</button><button class="btn small red act-sell">💰 卖 71</button></div></div><div class="hcard"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">银河</span><span class="gtag female">♀ 母</span><span class="rtag">相当离奇</span><span class="atag peak">5岁 · 巅峰</span></div><div class="gene">身高 <b>1.84</b>　腿长 <b>1.28</b><br>体重 <b>625kg</b>　性格 <b>普通</b><br>平衡 <b style="color:#8ce99a">四平八稳</b>　胜场 <b>0</b>　参赛 <b>0/2</b><br>步伐 <b style="color:#b197fc">弹弹跳跳</b></div></div></div><div class="srow"><span class="lb">肌肉</span><span class="sbar"><span class="sfill" style="width:44%;background:linear-gradient(90deg,#ff8a5c,#ffd93d)"></span></span><span class="sval">44</span></div><div class="srow"><span class="lb">耐力</span><span class="sbar"><span class="sfill" style="width:71%;background:linear-gradient(90deg,#4dabf7,#63e6be)"></span></span><span class="sval">71</span></div><div class="srow"><span class="lb">平衡</span><span class="sbar"><span class="sfill" style="width:60%;background:linear-gradient(90deg,#8ce99a,#8ce99a)"></span></span><span class="sval">60</span></div><div class="srow"><span class="lb">幸运</span><span class="sbar"><span class="sfill" style="width:25%;background:linear-gradient(90deg,#b197fc,#ffd93d)"></span></span><span class="sval">25</span></div><div class="srow"><span class="lb">身高</span><span class="sbar"><span class="sfill" style="width:54%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">54</span></div><div class="srow"><span class="lb">腿长</span><span class="sbar"><span class="sfill" style="width:49%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">49</span></div><div class="acts"><button class="btn small act-race">🏁 参赛 (0/2)</button><button class="btn small red act-sell">💰 卖 64</button></div></div><div class="hcard"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">微波炉</span><span class="gtag female">♀ 母</span><span class="rtag">相当离奇</span><span class="atag">7岁 · 成熟</span></div><div class="gene">身高 <b>1.32</b>　腿长 <b>1.30</b><br>体重 <b>548kg</b>　性格 <b>神经刀</b><br>平衡 <b style="color:#8ce99a">四平八稳</b>　胜场 <b>0</b>　参赛 <b>0/2</b><br>步伐 <b style="color:#b197fc">沉重慢步</b></div></div></div><div class="srow"><span class="lb">肌肉</span><span class="sbar"><span class="sfill" style="width:45.9%;background:linear-gradient(90deg,#ff8a5c,#ffd93d)"></span></span><span class="sval">46</span></div><div class="srow"><span class="lb">耐力</span><span class="sbar"><span class="sfill" style="width:28.9%;background:linear-gradient(90deg,#4dabf7,#63e6be)"></span></span><span class="sval">29</span></div><div class="srow"><span class="lb">平衡</span><span class="sbar"><span class="sfill" style="width:68%;background:linear-gradient(90deg,#8ce99a,#8ce99a)"></span></span><span class="sval">68</span></div><div class="srow"><span class="lb">幸运</span><span class="sbar"><span class="sfill" style="width:36.55%;background:linear-gradient(90deg,#b197fc,#ffd93d)"></span></span><span class="sval">37</span></div><div class="srow"><span class="lb">身高</span><span class="sbar"><span class="sfill" style="width:39%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">39</span></div><div class="srow"><span class="lb">腿长</span><span class="sbar"><span class="sfill" style="width:50%;background:linear-gradient(90deg,#63e6be,#4dabf7)"></span></span><span class="sval">50</span></div><div class="acts"><button class="btn small act-race">🏁 参赛 (0/2)</button><button class="btn small red act-sell">💰 卖 61</button></div></div></div></div>
   </div>
 </div>
 
 <div id="breedOverlay" class="overlay hidden">
   <div class="card" style="max-width:960px">
     <div class="card-head">
-      <div class="card-title">🧬 育马场 <span id="breedSub"></span></div>
+      <div class="card-title">🧬 育马场 <span id="breedSub">灵草 0 株　共有 4 匹马</span></div>
       <button class="btn ghost" id="btnCloseBreed">关闭 ✕</button>
     </div>
     <div class="card-body">
       <div class="breed-slots">
-        <div class="bslot" id="slotMale">
-          <div class="bslot-t">♂ 父本（公马）</div>
-          <div class="bslot-n" style="color:#6f8579;font-size:14px">点击下方公马选择</div>
-        </div>
+        <div class="bslot filled" id="slotMale"><div class="bslot-t">♂ 父本（公马）</div><div class="bslot-n">冰霜</div><div class="bslot-s">力量 72　耐力 65　平衡 29</div></div>
         <div class="breed-x">✕</div>
-        <div class="bslot" id="slotFemale">
-          <div class="bslot-t">♀ 母本（母马）</div>
-          <div class="bslot-n" style="color:#6f8579;font-size:14px">点击下方母马选择</div>
-        </div>
+        <div class="bslot filled" id="slotFemale"><div class="bslot-t">♀ 母本（母马）</div><div class="bslot-n">微波炉</div><div class="bslot-s">力量 54　耐力 34　平衡 80</div></div>
       </div>
 
       <div class="breed-hint">
@@ -244,11 +255,13 @@
         有几率突变出父母没有的体型 / 花色 / 配饰。每次繁育消耗 <b>🌿 育马灵草 ×1</b>。
       </div>
 
+      <div id="breedJobBox" style="display: block;" data-built="1"><div class="breed-card"><div class="breed-egg" id="breedEgg">💞</div><div class="breed-title" id="breedTitle">🌿 灵草入腹</div><div class="breed-story" id="breedStory">灵草化作点点绿光，「<b>冰霜</b>」和「<b>麻花</b>」同时打了个喷嚏。</div><div class="breed-bar"><div class="breed-fill" id="breedFill" style="width: 46.64%;"></div></div><div class="breed-time" id="breedTime">⏳ 剩余 04:16　·　46.6%</div><button class="btn" id="btnBreedClaim" style="width:100%;margin-top:10px;display:none">带 它 去 马 厩</button></div></div>
+
       <button class="btn" id="btnDoBreed" style="width:100%;padding:13px;margin-bottom:16px">
         🧬 开始繁育（消耗 🌿 育马灵草 ×1）
       </button>
 
-      <div class="grid" id="breedGrid"></div>
+      <div class="grid" id="breedGrid"><div class="hcard pickcard"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">麻花</span><span class="gtag female">♀ 母</span></div><div class="gene">力 64　耐 85　平 39　运 71<br>身 1.49　腿 1.53　重 626kg</div></div></div></div><div class="hcard pickcard sel"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">冰霜</span><span class="gtag male">♂ 公</span></div><div class="gene">力 72　耐 65　平 29　运 67<br>身 2.26　腿 1.23　重 796kg</div></div></div></div><div class="hcard pickcard"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">银河</span><span class="gtag female">♀ 母</span></div><div class="gene">力 44　耐 71　平 60　运 25<br>身 1.84　腿 1.28　重 625kg</div></div></div></div><div class="hcard pickcard sel"><div class="hcard-top"><canvas width="208" height="144"></canvas><div style="flex:1;min-width:0"><div class="hname"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">微波炉</span><span class="gtag female">♀ 母</span></div><div class="gene">力 54　耐 34　平 80　运 43<br>身 1.32　腿 1.30　重 548kg</div></div></div></div></div>
     </div>
   </div>
 </div>
@@ -256,15 +269,15 @@
 <div id="shopOverlay" class="overlay hidden">
   <div class="card" style="max-width:820px">
     <div class="card-head">
-      <div class="card-title">🛒 商店 <span id="shopCoins">🪙 0</span></div>
+      <div class="card-title">🛒 商店 <span id="shopCoins">🪙 700</span></div>
       <button class="btn ghost" id="btnCloseShop">关闭 ✕</button>
     </div>
     <div class="card-body">
       <div class="shop-target">
         <span>🎯 训练目标</span>
-        <select id="trainTarget"></select>
+        <select id="trainTarget"><option value="19">冰霜 · ♂ 公</option><option value="20">微波炉 · ♀ 母</option><option value="3">银河 · ♀ 母</option><option value="4">麻花 · ♀ 母</option></select>
       </div>
-      <div id="shopList"></div>
+      <div id="shopList"><div class="shop-item"><div class="ico">🪢</div><div style="flex:1;min-width:0"><div class="nm">套索<span class="own">🪙 150</span></div><div class="ds">捕获野马必备工具。每扔一次消耗 1 个。</div></div><button class="btn small">购买</button></div><div class="shop-item"><div class="ico">🪢</div><div style="flex:1;min-width:0"><div class="nm">套索 ×10 优惠装<span class="own">🪙 1350</span></div><div class="ds">一次买 10 个套索，省 150 金币。</div></div><button class="btn small ghost" disabled="">购买</button></div><div class="shop-item"><div class="ico">🌿</div><div style="flex:1;min-width:0"><div class="nm">育马灵草<span class="own">🪙 300</span></div><div class="ds">育马场使用，每次繁育消耗 1 株。</div></div><button class="btn small">购买</button></div><div class="shop-item"><div class="ico">💪</div><div style="flex:1;min-width:0"><div class="nm">肌肉强化剂<span class="own">🪙 220</span></div><div class="ds">对目标马匹使用，肌肉 +3～8。</div></div><button class="btn small">购买</button></div><div class="shop-item"><div class="ico">🫀</div><div style="flex:1;min-width:0"><div class="nm">耐力药剂<span class="own">🪙 220</span></div><div class="ds">对目标马匹使用，耐力 +3～8。</div></div><button class="btn small">购买</button></div><div class="shop-item"><div class="ico">⚖️</div><div style="flex:1;min-width:0"><div class="nm">平衡特训课<span class="own">🪙 260</span></div><div class="ds">对目标马匹使用，平衡 +3～8。</div></div><button class="btn small">购买</button></div><div class="shop-item"><div class="ico">🍀</div><div style="flex:1;min-width:0"><div class="nm">四叶草护符<span class="own">🪙 300</span></div><div class="ds">对目标马匹使用，幸运 +3～8。</div></div><button class="btn small">购买</button></div><div class="shop-item"><div class="ico">📏</div><div style="flex:1;min-width:0"><div class="nm">长高钙片<span class="own">🪙 280</span></div><div class="ds">对目标马匹使用，身高 +0.05～0.15。</div></div><button class="btn small">购买</button></div><div class="shop-item"><div class="ico">🦵</div><div style="flex:1;min-width:0"><div class="nm">拉腿瑜伽课<span class="own">🪙 280</span></div><div class="ds">对目标马匹使用，腿长 +0.05～0.15。</div></div><button class="btn small">购买</button></div><div class="shop-item"><div class="ico">⚖️</div><div style="flex:1;min-width:0"><div class="nm">减脂操<span class="own">🪙 200</span></div><div class="ds">对目标马匹使用，体重降低 5～20kg（越快越灵活）。</div></div><button class="btn small">购买</button></div><div class="shop-item"><div class="ico">⏳</div><div style="flex:1;min-width:0"><div class="nm">青春之水<span class="own">🪙 600</span></div><div class="ds">对目标马匹使用，年龄 -1（最低 1 岁）。</div></div><button class="btn small">购买</button></div></div>
     </div>
   </div>
 </div>
@@ -276,7 +289,7 @@
       <button class="btn ghost" id="btnCloseBet">关闭 ✕</button>
     </div>
     <div class="card-body">
-      <div class="bet-list" id="betList"></div>
+      <div class="bet-list" id="betList"><div class="betcard"><div class="bo">×1.15</div><canvas width="208" height="144"></canvas><div class="bn">银月·Mini</div><div class="bs">力 <b>51</b>　耐 <b>67</b><br>平 <b style="color:#8ce99a">四平八稳</b>　运 <b>71</b><br>身 <b>1.63</b>　腿 <b>1.16</b>　性 <b>沉稳</b></div></div><div class="betcard"><div class="bo">×1.26</div><canvas width="208" height="144"></canvas><div class="bn">沙暴·大王</div><div class="bs">力 <b>79</b>　耐 <b>61</b><br>平 <b style="color:#8ce99a">四平八稳</b>　运 <b>45</b><br>身 <b>2.22</b>　腿 <b>1.26</b>　性 <b>普通</b></div></div><div class="betcard"><div class="bo">×1.15</div><canvas width="208" height="144"></canvas><div class="bn">踏雪</div><div class="bs">力 <b>73</b>　耐 <b>56</b><br>平 <b style="color:#ffd93d">马马虎虎</b>　运 <b>10</b><br>身 <b>2.21</b>　腿 <b>1.48</b>　性 <b>神经刀</b></div></div><div class="betcard"><div class="bo">×1.18</div><canvas width="208" height="144"></canvas><div class="bn">章鱼哥</div><div class="bs">力 <b>68</b>　耐 <b>62</b><br>平 <b style="color:#8ce99a">四平八稳</b>　运 <b>66</b><br>身 <b>1.47</b>　腿 <b>1.15</b>　性 <b>神经刀</b></div></div></div>
       <div class="bet-money">
         <span class="lb">💰 下注金额</span>
         <button class="chip on" data-amt="50">50</button>
@@ -296,8 +309,8 @@
 <div id="resultOverlay" class="overlay hidden">
   <div class="card" style="max-width:560px">
     <div class="card-body">
-      <div class="result" id="resultBody"></div>
-      <button class="btn" id="btnCloseResult" style="width:100%;padding:14px">回 到 原 野</button>
+      <div class="result" id="resultBody"><div class="big">🥈 第 2 名</div><div class="sub">屈居亚军　获得 🪙 200</div><div class="plist"><div class="prow "><span class="place">🥇</span><span class="pn">拖鞋·大王　摔倒1次</span><span class="pt">16.43s　(0/2场)</span></div><div class="prow me"><span class="place">🥈</span><span class="pn">银河 (你)</span><span class="pt">16.60s　(1/2场)</span></div><div class="prow "><span class="place">🥉</span><span class="pn">赤兔　摔倒3次</span><span class="pt">未完赛　(0/2场)</span></div><div class="prow "><span class="place">4️⃣</span><span class="pn">飞雪　摔倒3次</span><span class="pt">未完赛　(0/2场)</span></div></div></div>
+      <button class="btn" id="btnCloseResult" style="width:100%;padding:14px" data-from-bet="0">回 到 原 野</button>
     </div>
   </div>
 </div>
@@ -600,7 +613,8 @@ function horsePower(h){
          g.height*8 + g.legLength*10 - Math.max(0, g.weight-500)*0.03 + h.weirdness*0.6;
 }
 function horsePrice(h){
-  const base = 80 + horsePower(h) * 3.2;
+  // ★ 卖马只值小钱：一匹普通马约 50~75 金币，2~3 匹才够换回一个套索（150 金币）
+  const base = 14 + horsePower(h) * 0.42 + (h.weirdness || 0) * 1.6;
   return Math.round(base * (KIND_BONUS[h.kind] || 1));
 }
 
@@ -1656,7 +1670,7 @@ function nearestHorse(maxD){
 function tryThrowLasso(){
   if (G.lasso || G.capture) return;
   if (G.lassoCount <= 0){
-    toast('🪢 套索用完了！去商店买一些吧（100 金币 / 个）', 2000);
+    toast('🪢 套索用完了！去商店买一些吧（150 金币 / 个）', 2000);
     return;
   }
   const target = nearestHorse(260);
@@ -1954,8 +1968,10 @@ const MAX_RACES = 2;
 
 function startRace(playerHorse){
   if (G.race) return;
-  if ((playerHorse.raceCount || 0) >= MAX_RACES){
-    toast('🏁 「'+playerHorse.name+'」已经跑满 2 场啦，让它休息吧', 2000);
+  const maxR = playerHorse.singleRace ? 1 : MAX_RACES;
+  if ((playerHorse.raceCount || 0) >= maxR){
+    toast('🏁 「'+playerHorse.name+'」' +
+      (playerHorse.singleRace ? '是繁育马，只能参赛 1 次' : '已经跑满 2 场啦，让它休息吧'), 2000);
     return;
   }
   const entries = [playerHorse];
@@ -2106,7 +2122,7 @@ function showResult(sorted, rank, prize){
     const t = r.finishTime >= 900 ? '未完赛' : r.finishTime.toFixed(2)+'s';
     const fallTxt = r.fallCount > 0 ? '　摔倒'+r.fallCount+'次' : '';
     const rc = r.data.raceCount || 0;
-    const raceTxt = '　(' + rc + '/' + MAX_RACES + '场)';
+    const raceTxt = '　(' + rc + '/' + (r.data.singleRace ? 1 : MAX_RACES) + '场)';
     html += '<div class="prow '+(r.isPlayer?'me':'')+'">' +
       '<span class="place">'+(medals[i]||(i+1))+'</span>' +
       '<span class="pn">'+r.data.name+(r.isPlayer?' (你)':'')+fallTxt+'</span>' +
@@ -2118,39 +2134,16 @@ function showResult(sorted, rank, prize){
   G.paused = true;
 }
 
-function renderRace(){
-  const R = G.race;
-  if (!R) return;
-
-  const sky = ctx.createLinearGradient(0,0,0,H);
-  sky.addColorStop(0,'#08131f');
-  sky.addColorStop(0.42,'#12304a');
-  sky.addColorStop(0.72,'#1d4d2e');
-  sky.addColorStop(1,'#276237');
-  ctx.fillStyle = sky;
-  ctx.fillRect(0,0,W,H);
-
-  ctx.fillStyle = 'rgba(12,40,30,0.75)';
-  ctx.beginPath();
-  ctx.moveTo(-50, H*0.32);
-  for (let i=0;i<=12;i++){
-    const px = -50 + (W+100)*i/12;
-    const py = H*0.32 - Math.sin(i*1.7)*26 - Math.sin(i*0.6)*18;
-    ctx.lineTo(px, py);
-  }
-  ctx.lineTo(W+50, H*0.5);
-  ctx.lineTo(-50, H*0.5);
-  ctx.closePath();
-  ctx.fill();
-
-  const top = H*0.24, bottom = H*0.95;
-  const laneGap = (bottom - top) / 4;
+/* ============================================================
+   公共辅助：放在 renderRace 之前
+   ============================================================ */
+function _raceLayout(R){
+  const top = H*0.26, bottom = H*0.96;
+  const laneGap = (bottom - top)/4;
   const groundYs = [0,1,2,3].map(function(i){ return top + laneGap*(i+1); });
-
   const sc = clamp(Math.min(W/860, H/560), 0.75, 1.35);
   const startX = 150;
   const totalPx = startX + RACE_LEN*PXU + 150;
-
   let camX;
   if (totalPx > W){
     let lead = 0;
@@ -2159,129 +2152,422 @@ function renderRace(){
   } else {
     camX = -(W - totalPx)/2;
   }
-
+  return { top:top, bottom:bottom, laneGap:laneGap, groundYs:groundYs,
+           sc:sc, startX:startX, totalPx:totalPx, camX:camX };
+}
+function _raceOrder(R){
+  const o = R.horses.slice().sort(function(a,b){
+    if (a.finished && b.finished) return a.finishTime - b.finishTime;
+    if (a.finished) return -1;
+    if (b.finished) return 1;
+    return b.x - a.x;
+  });
+  for (let i=0;i<o.length;i++) o[i]._rank = i+1;
+  return o;
+}
+/* 通用：顶部 HUD + 倒计时 + 体力条（三版共用） */
+function _raceHud(R, sc, accent){
+  const myRank = (function(){
+    for (let i=0;i<R.horses.length;i++) if (R.horses[i].isPlayer) return R.horses[i]._rank || 1;
+    return 1;
+  })();
   ctx.save();
-  ctx.translate(-camX, 0);
-  const wl = camX-100, wr = camX+W+100;
-
-  ctx.fillStyle = '#1c4126';
-  ctx.fillRect(wl, groundYs[0]-laneGap*0.55, wr-wl, H+200);
-
-  for (let i=0;i<4;i++){
-    const gy = groundYs[i];
-    ctx.fillStyle = i%2 ? 'rgba(255,255,255,0.045)' : 'rgba(0,0,0,0.10)';
-    ctx.fillRect(wl, gy-laneGap*0.55, wr-wl, laneGap);
-    ctx.strokeStyle = 'rgba(190,255,190,0.14)';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(wl, gy);
-    ctx.lineTo(wr, gy);
-    ctx.stroke();
-  }
-
-  const trackTop = groundYs[0]-laneGap*0.55;
-  const trackBottom = groundYs[3]+laneGap*0.45;
-
-  ctx.fillStyle = 'rgba(255,255,255,0.22)';
-  ctx.fillRect(startX-3, trackTop, 6, trackBottom-trackTop);
-
-  const finishX = startX + RACE_LEN*PXU;
-  const cell = 14;
-  let row = 0;
-  for (let y=trackTop; y<trackBottom; y+=cell, row++){
-    for (let c=0;c<2;c++){
-      ctx.fillStyle = (row+c)%2 ? '#f2f2f2' : '#1a1a1a';
-      ctx.fillRect(finishX - cell + c*cell, y, cell, Math.min(cell, trackBottom-y));
-    }
-  }
-
-  const ordered = R.horses.slice().sort(function(a,b){ return a.lane - b.lane; });
-
-  for (let i=0;i<ordered.length;i++){
-    const r = ordered[i];
-    const px = startX + r.x*PXU;
-    const speed = r.v;
-    drawEntity(ctx, px, groundYs[r.lane], sc, r.data, r.legPhase, speed, r.isPlayer, r.fallen);
-    ctx.font = 'bold '+Math.round(14*sc)+'px system-ui,sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'bottom';
-    ctx.fillStyle = r.isPlayer ? '#ffd93d' : 'rgba(215,238,226,0.78)';
-    ctx.fillText(r.data.name, px, groundYs[r.lane] - 92*sc);
-  }
-
-  ctx.restore();
-
-  let myRank = 1;
-  const sortedNow = R.horses.slice().sort(function(a,b){ return b.x - a.x; });
-  for (let i=0;i<sortedNow.length;i++) if (sortedNow[i].isPlayer) myRank = i+1;
-
-  let ply = null;
-  for (let i=0;i<R.horses.length;i++) if (R.horses[i].isPlayer) ply = R.horses[i];
-
-  ctx.save();
-  roundRect(ctx, W/2-96, 14, 192, 46, 14);
-  ctx.fillStyle = 'rgba(6,18,12,0.7)';
-  ctx.fill();
-  ctx.strokeStyle = 'rgba(255,255,255,0.12)';
-  ctx.lineWidth = 1;
-  ctx.stroke();
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillStyle = '#e8f2ec';
-  ctx.font = '900 20px system-ui,sans-serif';
-  ctx.fillText(R.time.toFixed(1)+'s', W/2-40, 38);
-  ctx.fillStyle = myRank === 1 ? '#ffd93d' : '#9fb8aa';
-  ctx.font = '900 18px system-ui,sans-serif';
-  ctx.fillText('第 '+myRank+' 名', W/2+46, 38);
-  ctx.restore();
 
-  const barW = Math.min(W-60, 560);
-  const barX = (W-barW)/2, barY = 74;
-  roundRect(ctx, barX, barY, barW, 8, 4);
-  ctx.fillStyle = 'rgba(0,0,0,0.45)';
+  /* 时间 / 名次 面板 */
+  const pw = 224, ph = 54, px = W/2 - pw/2, py = 12;
+  roundRect(ctx, px, py, pw, ph, 16);
+  ctx.fillStyle = 'rgba(4,10,14,0.74)';
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,0.10)';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+
+  ctx.fillStyle = '#e8f2ec';
+  ctx.font = '900 26px ui-monospace,Menlo,monospace';
+  ctx.fillText(R.time.toFixed(1), W/2 - 50, py + ph/2 + 1);
+  ctx.fillStyle = 'rgba(160,185,172,0.7)';
+  ctx.font = '800 11px system-ui,sans-serif';
+  ctx.fillText('SEC', W/2 - 50, py + ph/2 + 20);
+
+  ctx.fillStyle = myRank === 1 ? accent : 'rgba(180,205,192,0.85)';
+  ctx.font = '900 24px system-ui,sans-serif';
+  ctx.fillText('第 '+myRank+' 名', W/2 + 52, py + ph/2 + 1);
+
+  /* 迷你进度条 */
+  const bw = Math.min(W - 70, 560), bx = (W-bw)/2, by = 78;
+  roundRect(ctx, bx, by, bw, 7, 4);
+  ctx.fillStyle = 'rgba(255,255,255,0.10)';
   ctx.fill();
   for (let i=0;i<R.horses.length;i++){
     const r = R.horses[i];
     const t = clamp(r.x/RACE_LEN, 0, 1);
-    ctx.fillStyle = r.isPlayer ? '#ffd93d' : 'rgba(120,220,180,0.85)';
+    ctx.fillStyle = r.isPlayer ? accent : 'rgba(150,200,180,0.55)';
     ctx.beginPath();
-    ctx.arc(barX + barW*t, barY+4, r.isPlayer?5.5:4, 0, TAU);
+    ctx.arc(bx + bw*t, by + 3.5, r.isPlayer ? 6 : 3.6, 0, TAU);
     ctx.fill();
   }
+  ctx.restore();
 
-  if (R.countdown > 0){
+  /* 体力条 */
+  let ply = null;
+  for (let i=0;i<R.horses.length;i++) if (R.horses[i].isPlayer) ply = R.horses[i];
+  if (ply){
+    const w=210, h=9, x=(W-w)/2, y=H-30;
     ctx.save();
-    ctx.fillStyle = 'rgba(0,0,0,0.55)';
-    ctx.fillRect(0,0,W,H);
-    const n = Math.ceil(R.countdown);
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillStyle = '#ffd93d';
-    ctx.font = '900 110px system-ui,sans-serif';
-    ctx.fillText(n<=0 ? 'GO!' : String(n), W/2, H/2-20);
-    ctx.fillStyle = 'rgba(200,220,210,0.75)';
-    ctx.font = '700 16px system-ui,sans-serif';
-    ctx.fillText('准备起跑……', W/2, H/2+70);
+    roundRect(ctx,x,y,w,h,5);
+    ctx.fillStyle='rgba(0,0,0,0.5)'; ctx.fill();
+    roundRect(ctx,x,y,Math.max(0.5,w*clamp(1-ply.fatigue,0,1)),h,5);
+    const g2=ctx.createLinearGradient(x,0,x+w,0);
+    g2.addColorStop(0,'#5fd17a'); g2.addColorStop(1,accent);
+    ctx.fillStyle=g2; ctx.fill();
+    ctx.fillStyle='rgba(200,220,210,0.65)';
+    ctx.font='bold 10.5px system-ui,sans-serif';
+    ctx.textAlign='center'; ctx.textBaseline='bottom';
+    ctx.fillText('体力', W/2, y-4);
     ctx.restore();
   }
 
-  if (ply){
-    const w=200, h=10, x=(W-w)/2, y=H-34;
-    roundRect(ctx,x,y,w,h,5);
-    ctx.fillStyle = 'rgba(0,0,0,0.5)';
-    ctx.fill();
-    roundRect(ctx,x,y,Math.max(0.5,w*clamp(1-ply.fatigue,0,1)),h,5);
-    const g2 = ctx.createLinearGradient(x,0,x+w,0);
-    g2.addColorStop(0,'#5fd17a');
-    g2.addColorStop(1,'#ffd93d');
-    ctx.fillStyle = g2;
-    ctx.fill();
-    ctx.fillStyle = 'rgba(200,220,210,0.7)';
-    ctx.font = 'bold 11px system-ui,sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'bottom';
-    ctx.fillText('体力（自动奔跑）', W/2, y-4);
+  /* 倒计时 */
+  if (R.countdown > 0){
+    ctx.save();
+    ctx.fillStyle = 'rgba(0,0,0,0.62)';
+    ctx.fillRect(0,0,W,H);
+    const n = Math.ceil(R.countdown);
+    const pulse = 1 + Math.sin((R.countdown % 1) * Math.PI) * 0.10;
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.translate(W/2, H/2 - 16);
+    ctx.scale(pulse, pulse);
+
+    ctx.shadowColor = accent;
+    ctx.shadowBlur = 34;
+    ctx.fillStyle = accent;
+    ctx.font = '900 118px system-ui,sans-serif';
+    ctx.fillText(n <= 0 ? 'GO!' : String(n), 0, 0);
+    ctx.shadowBlur = 0;
+
+    ctx.fillStyle = 'rgba(200,220,210,0.72)';
+    ctx.font = '800 15px system-ui,sans-serif';
+    ctx.fillText('准 备 起 跑', 0, 92);
+    ctx.restore();
   }
+}
+  /* ============================================================
+   版本 C · 俯视跑道条（极简 / 全览 / 数据感）
+   ============================================================ */
+function renderRace(){
+  const R = G.race; if (!R) return;
+  const T = performance.now()/1000;
+
+  /* ---------- 背景 ---------- */
+  const bg = ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#0d1f16');
+  bg.addColorStop(0.35,'#16281c');
+  bg.addColorStop(1,'#1d3624');
+  ctx.fillStyle = bg; ctx.fillRect(0,0,W,H);
+
+  /* 星空（固定种子，避免闪烁） */
+  const starRnd = mulberry(20240611);
+  ctx.save();
+  for (let i=0;i<110;i++){
+    const sx = starRnd()*W;
+    const sy = starRnd()*H*0.9;
+    const ss = 0.5 + starRnd()*1.6;
+    const tw = 0.20 + 0.60*Math.abs(Math.sin(T*0.7 + i*1.7));
+    ctx.fillStyle = 'rgba(150,220,205,'+(tw*0.55).toFixed(3)+')';
+    ctx.beginPath(); ctx.arc(sx, sy, ss, 0, TAU); ctx.fill();
+  }
+  ctx.restore();
+
+  /* 场地网格 */
+  ctx.save();
+  ctx.strokeStyle = 'rgba(90,200,180,0.045)';
+  ctx.lineWidth = 1;
+  for (let gx = 0; gx < W; gx += 64){
+    ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, H); ctx.stroke();
+  }
+  for (let gy = 0; gy < H; gy += 64){
+    ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke();
+  }
+  ctx.restore();
+
+  /* 顶部光晕 */
+  const halo = ctx.createRadialGradient(W*0.5, H*0.10, 0, W*0.5, H*0.10, Math.max(W,H)*0.95);
+  halo.addColorStop(0,'rgba(80,220,190,0.16)');
+  halo.addColorStop(0.5,'rgba(60,180,200,0.05)');
+  halo.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle = halo; ctx.fillRect(0,0,W,H);
+
+  /* ---------- 布局 ---------- */
+  const padTop = 104, padBot = 82, padX = 48;
+  const trackH = (H - padTop - padBot) / 4;
+  const x0 = padX, x1 = W - padX;
+  const sc = clamp(trackH/172, 0.48, 0.95);
+
+  /* ---------- 场地边缘森林 ---------- */
+  (function(){
+    const fr = mulberry(90210);          // 固定种子：位置不闪烁
+    const edgeW = padX + 24;
+    const topH  = padTop + 14;
+    const botY  = H - padBot - 6;
+    const trees = [];
+    for (let i=0;i<78;i++){
+      const side = fr();
+      let tx, ty, r;
+      if (side < 0.32){                  // 上缘
+        tx = -30 + fr()*(W+60);
+        ty = -18 + fr()*(topH + 18);
+        r  = 16 + fr()*26;
+      } else if (side < 0.64){           // 下缘
+        tx = -30 + fr()*(W+60);
+        ty = botY + fr()*(H - botY + 20);
+        r  = 14 + fr()*24;
+      } else if (side < 0.82){           // 左缘
+        tx = -24 + fr()*(edgeW + 24);
+        ty = fr()*H;
+        r  = 18 + fr()*30;
+      } else {                           // 右缘
+        tx = W - edgeW - 24 + fr()*(edgeW + 48);
+        ty = fr()*H;
+        r  = 18 + fr()*30;
+      }
+      trees.push({ x:tx, y:ty, r:r, k: 0.30 + fr()*0.60 });
+    }
+    trees.sort(function(a,b){ return a.k - b.k; });   // 远景先画
+
+    ctx.save();
+    for (let i=0;i<trees.length;i++){
+      const t = trees[i], r = t.r;
+      const a = 0.30 + t.k*0.55;         // 越"远"越淡
+      ctx.fillStyle = 'rgba(26,20,13,'+ a.toFixed(3) +')';        // 树干
+      ctx.fillRect(t.x - r*0.09, t.y - r*0.25, r*0.18, r*1.10);
+      ctx.fillStyle = 'rgba(20,64,42,'+ a.toFixed(3) +')';        // 主冠
+      ctx.beginPath(); ctx.arc(t.x, t.y - r*0.95, r*0.90, 0, TAU); ctx.fill();
+      ctx.fillStyle = 'rgba(30,88,56,'+ (a*0.8).toFixed(3) +')';  // 次冠
+      ctx.beginPath(); ctx.arc(t.x - r*0.26, t.y - r*1.34, r*0.60, 0, TAU); ctx.fill();
+      ctx.fillStyle = 'rgba(42,110,70,'+ (a*0.55).toFixed(3) +')';// 高光叶
+      ctx.beginPath(); ctx.arc(t.x + r*0.30, t.y - r*1.16, r*0.48, 0, TAU); ctx.fill();
+    }
+    ctx.restore();
+  })();
+
+  /* ---------- 两侧光柱 ---------- */
+  const lgL = ctx.createLinearGradient(0,0,W*0.10,0);
+  lgL.addColorStop(0,'rgba(80,220,190,0.14)');
+  lgL.addColorStop(1,'rgba(80,220,190,0)');
+  ctx.fillStyle = lgL; ctx.fillRect(0,0,W*0.10,H);
+  const lgR = ctx.createLinearGradient(W,0,W*0.90,0);
+  lgR.addColorStop(0,'rgba(80,220,190,0.14)');
+  lgR.addColorStop(1,'rgba(80,220,190,0)');
+  ctx.fillStyle = lgR; ctx.fillRect(W*0.90,0,W*0.10,H);
+
+  /* ---------- 跑道分隔虚线 + 中央轴 ---------- */
+  ctx.save();
+  ctx.setLineDash([4,8]);
+  ctx.strokeStyle = 'rgba(150,205,150,0.16)';
+  ctx.lineWidth = 1;
+  for (let i=1;i<4;i++){
+    const dy = padTop + trackH*i;
+    ctx.beginPath(); ctx.moveTo(x0, dy); ctx.lineTo(x1, dy); ctx.stroke();
+  }
+  ctx.setLineDash([]);
+  ctx.strokeStyle = 'rgba(255,255,255,0.035)';
+  for (let i=0;i<4;i++){
+    const cy = padTop + trackH*i + trackH*0.5;
+    ctx.beginPath(); ctx.moveTo(x0, cy); ctx.lineTo(x1, cy); ctx.stroke();
+  }
+  ctx.restore();
+  
+  /* ---------- 名次 ---------- */
+  _raceOrder(R);
+  const lanes = R.horses.slice().sort(function(a,b){ return a.lane - b.lane; });
+
+  /* ---------- 终点线 ---------- */
+  ctx.save();
+  ctx.strokeStyle = 'rgba(120,240,200,0.5)';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([6,6]);
+  ctx.beginPath();
+  ctx.moveTo(x1 + 22, padTop - 6);
+  ctx.lineTo(x1 + 22, padTop + trackH*4 + 6);
+  ctx.stroke();
+  ctx.restore();
+
+  ctx.font = '900 10px ui-monospace,monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.fillStyle = 'rgba(120,240,200,0.7)';
+  ctx.fillText('FINISH', x1 + 22, padTop - 12);
+
+  /* ---------- 每条跑道 ---------- */
+  for (let i=0;i<4;i++){
+    const r = lanes[i];
+    const ly = padTop + trackH*i;
+    const cy = ly + trackH*0.5;
+
+    const isMe = r.isPlayer;
+    const col = isMe ? '#ffd93d' : 'rgba(120,200,175,0.75)';
+
+    /* 跑道底 */
+    roundRect(ctx, x0, ly + 6, x1 - x0, trackH - 12, 14);
+    const trackGrad = ctx.createLinearGradient(x0, ly, x1, ly + trackH);
+    if (isMe){
+      trackGrad.addColorStop(0,'rgba(255,217,61,0.05)');
+      trackGrad.addColorStop(0.5,'rgba(255,217,61,0.12)');
+      trackGrad.addColorStop(1,'rgba(255,217,61,0.05)');
+    } else {
+      trackGrad.addColorStop(0,'rgba(110,160,120,0.06)');
+      trackGrad.addColorStop(0.5,'rgba(140,190,150,0.14)');
+      trackGrad.addColorStop(1,'rgba(110,160,120,0.06)');
+    }
+    ctx.fillStyle = trackGrad;
+    ctx.fill();
+
+    /* 进度填充 */
+    const t = clamp(r.x / RACE_LEN, 0, 1);
+    if (t > 0.01){
+      ctx.save();
+      roundRect(ctx, x0, ly + 6, x1 - x0, trackH - 12, 14);
+      ctx.clip();
+      const fg = ctx.createLinearGradient(x0, 0, x0 + (x1-x0)*t, 0);
+      fg.addColorStop(0, isMe ? 'rgba(255,217,61,0.06)' : 'rgba(120,200,175,0.04)');
+      fg.addColorStop(1, isMe ? 'rgba(255,217,61,0.20)' : 'rgba(120,200,175,0.12)');
+      ctx.fillStyle = fg;
+      ctx.fillRect(x0, ly + 6, (x1-x0)*t, trackH - 12);
+      ctx.restore();
+    }
+
+    /* 出发 / 终点刻度 */
+    ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+    ctx.lineWidth = 1;
+    for (let m=10; m<RACE_LEN; m+=10){
+      const mx = x0 + (x1-x0)*(m/RACE_LEN);
+      ctx.beginPath();
+      ctx.moveTo(mx, ly + 8);
+      ctx.lineTo(mx, ly + 16);
+      ctx.stroke();
+    }
+
+    /* 马 */
+    const px = x0 + (x1-x0)*t;
+    const gy = ly + trackH - 14;
+
+    if (r.v > 10){
+      ctx.save();
+      ctx.globalAlpha = 0.28;
+      for (let k=1;k<=3;k++){
+        ctx.fillStyle = col;
+        ctx.fillRect(px - (26 + k*13)*sc, gy - (30 + k*3)*sc, 18*sc, 3);
+      }
+      ctx.restore();
+    }
+
+    drawEntity(ctx, px, gy, sc, r.data, r.legPhase, r.v, r.isPlayer, r.fallen);
+
+    /* 名字 */
+    ctx.font = '900 ' + Math.round(13*sc) + 'px system-ui,sans-serif';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = isMe ? '#ffd93d' : 'rgba(200,225,215,0.62)';
+    ctx.fillText(r.data.name, x0 + 16, ly + 20);
+
+    /* 名次徽章（右端） */
+    const bx = x1 + 22;
+    ctx.beginPath();
+    ctx.arc(bx, cy, 15, 0, TAU);
+    ctx.fillStyle = isMe ? 'rgba(255,217,61,0.92)' : 'rgba(255,255,255,0.07)';
+    ctx.fill();
+    ctx.strokeStyle = isMe ? 'rgba(255,217,61,1)' : 'rgba(255,255,255,0.14)';
+    ctx.lineWidth = 1.4;
+    ctx.stroke();
+    ctx.fillStyle = isMe ? '#20180a' : 'rgba(220,240,232,0.8)';
+    ctx.font = '900 14px ui-monospace,monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(String(r._rank), bx, cy + 0.5);
+  }
+
+  /* ---------- 顶部信息 ---------- */
+  const myRank = (function(){
+    for (let i=0;i<R.horses.length;i++) if (R.horses[i].isPlayer) return R.horses[i]._rank || 1;
+    return 1;
+  })();
+
+  ctx.save();
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+
+  ctx.fillStyle = 'rgba(255,255,255,0.42)';
+  ctx.font = '800 11px ui-monospace,monospace';
+  ctx.fillText('RACE TIME', padX, 34);
+
+  ctx.fillStyle = '#e8f2ec';
+  ctx.font = '900 40px ui-monospace,Menlo,monospace';
+  ctx.fillText(R.time.toFixed(2), padX, 62);
+
+  ctx.fillStyle = 'rgba(255,255,255,0.42)';
+  ctx.font = '800 11px ui-monospace,monospace';
+  ctx.textAlign = 'right';
+  ctx.fillText('POSITION', W - padX, 34);
+
+  ctx.fillStyle = myRank === 1 ? '#ffd93d' : 'rgba(180,210,196,0.9)';
+  ctx.font = '900 40px ui-monospace,Menlo,monospace';
+  ctx.fillText(String(myRank), W - padX, 62);
+
+  ctx.fillStyle = 'rgba(255,255,255,0.32)';
+  ctx.font = '800 11px ui-monospace,monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('PROGRESS  ' + Math.round(R.horses.find(function(h){return h.isPlayer;}).x / RACE_LEN * 100) + '%',
+               W/2, 40);
+  ctx.restore();
+
+  /* 底部体力 */
+  let ply = null;
+  for (let i=0;i<R.horses.length;i++) if (R.horses[i].isPlayer) ply = R.horses[i];
+  if (ply){
+    const w = Math.min(W - padX*2, 460);
+    const x = (W - w)/2, y = H - 40;
+    roundRect(ctx, x, y, w, 6, 3);
+    ctx.fillStyle = 'rgba(255,255,255,0.08)';
+    ctx.fill();
+    roundRect(ctx, x, y, Math.max(0.5, w*clamp(1-ply.fatigue,0,1)), 6, 3);
+    ctx.fillStyle = '#5fd17a';
+    ctx.fill();
+
+    ctx.fillStyle = 'rgba(255,255,255,0.35)';
+    ctx.font = '800 10px ui-monospace,monospace';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText('STAMINA', W/2, y + 12);
+  }
+
+  /* ---------- 暗角 ---------- */
+  const vg = ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*0.42,W/2,H/2,Math.max(W,H)*0.85);
+  vg.addColorStop(0,'rgba(0,0,0,0)');
+  vg.addColorStop(1,'rgba(0,0,0,0.55)');
+  ctx.fillStyle = vg; ctx.fillRect(0,0,W,H);
+
+  /* ---------- 底部装饰刻度 ---------- */
+  ctx.save();
+  const baseY = H - padBot + 14;
+  ctx.strokeStyle = 'rgba(120,220,195,0.12)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(padX, baseY);
+  ctx.lineTo(W - padX, baseY);
+  ctx.stroke();
+  for (let i=0;i<=24;i++){
+    const tx = padX + (W - padX*2) * (i/24);
+    const tall = (i % 4 === 0);
+    ctx.beginPath();
+    ctx.moveTo(tx, baseY);
+    ctx.lineTo(tx, baseY - (tall ? 9 : 4));
+    ctx.stroke();
+  }
+  ctx.restore();
+
+  _raceHud(R, sc, '#ffd93d');
 }
 
 /* ============================== 基础 UI ============================== */
@@ -2339,7 +2625,8 @@ function renderStable(){
     const price = horsePrice(h);
     const bal = balanceLabel(g.balance);
     const M = moveStyleOf(h.look.shape);
-    const raceLeft = MAX_RACES - (h.raceCount || 0);
+    const maxR = h.singleRace ? 1 : MAX_RACES;   // ★ 繁育马只跑 1 次
+    const raceLeft = maxR - (h.raceCount || 0);
 
     const card = document.createElement('div');
     card.className = 'hcard';
@@ -2355,8 +2642,8 @@ function renderStable(){
 
     const raceBtnDisabled = raceLeft <= 0;
     const raceBtnLabel = raceBtnDisabled
-      ? '⛔ 已跑满 '+MAX_RACES+' 场'
-      : '🏁 参赛 (' + (h.raceCount||0) + '/' + MAX_RACES + ')';
+      ? '⛔ 已跑满 '+maxR+' 场'
+      : '🏁 参赛 (' + (h.raceCount||0) + '/' + maxR + ')';
 
     const kindTag = h.kind !== 'horse'
       ? '<span class="ktag">'+KIND_LABEL[h.kind]+' 彩蛋</span>' : '';
@@ -2378,7 +2665,8 @@ function renderStable(){
           '<div class="gene">' +
             '身高 <b>'+g.height.toFixed(2)+'</b>　腿长 <b>'+g.legLength.toFixed(2)+'</b><br>' +
             '体重 <b>'+g.weight+'kg</b>　性格 <b>'+TEMPER_NAME[g.temper]+'</b><br>' +
-            '平衡 <b style="color:'+bal.color+'">'+bal.text+'</b>　胜场 <b>'+(h.wins||0)+'</b>　参赛 <b>'+(h.raceCount||0)+'/'+MAX_RACES+'</b><br>' +
+              '平衡 <b style="color:'+bal.color+'">'+bal.text+'</b>　胜场 <b>'+(h.wins||0)+'</b>　参赛 <b>'+(h.raceCount||0)+'/'+maxR+'</b>' +
+            (h.singleRace ? '　<span class="ktag">繁育·限跑1次</span>' : '') + '<br>' +
             '步伐 <b style="color:#b197fc">'+M.label+'</b>' +
           '</div>' +
         '</div>' +
@@ -2399,7 +2687,7 @@ function renderStable(){
 
     card.querySelector('.act-race').onclick = function(){
       if (raceLeft <= 0){
-        toast('⛔ 「'+h.name+'」已经跑满 '+MAX_RACES+' 场啦', 1800);
+        toast('⛔ 「'+h.name+'」已经跑满 '+maxR+' 场啦', 1800);
         return;
       }
       document.getElementById('stableOverlay').classList.add('hidden');
@@ -2501,29 +2789,137 @@ function renderBreed(){
   }
 }
 
+const BREED_DURATION = 8 * 60 * 1000;   // 8 分钟
+const BREED_STORY = [
+  { t:0.00, title:'💞 相互打量', line:'「{F}」绕着「{M}」走了两圈，鼻子碰了碰鼻子。' },
+  { t:0.14, title:'🌙 月下私语', line:'……也不知道聊了什么，反正「{M}」好像脸红了。' },
+  { t:0.32, title:'🌿 灵草入腹', line:'灵草化作点点绿光，「{F}」和「{M}」同时打了个喷嚏。' },
+  { t:0.52, title:'✨ 基因翻涌', line:'空气里飘过一丝不祥的气息……希望别太离谱。' },
+  { t:0.72, title:'🥚 马驹成形', line:'隐约能听到小小的马蹄声，越来越近了。' },
+  { t:0.90, title:'🎉 即将落地', line:'屏住呼吸——它就要出来了！' }
+];
+
 function doBreed(){
   const f = G.breed.father, m = G.breed.mother;
   if (!f || !m){ toast('🧬 请先选择一公一母', 1600); return; }
+  if (G.breedJob){ toast('🧬 育马房里正忙着呢，先等等吧', 1800); return; }
   if (G.herbCount <= 0){ toast('🌿 没有育马灵草了！去商店买吧', 1800); return; }
   if (f === m){ toast('🧬 同一匹马不能自交哦', 1600); return; }
 
   G.herbCount--;
-  const child = breedHorses(f, m);
-  G.stable.push(child);
+  G.breedJob = {
+    father: f, mother: m,
+    start: performance.now(),
+    dur: BREED_DURATION,
+    child: null, claimed: false
+  };
   updateHUD();
   renderBreed();
-  toast('🎉 「'+f.name+'」×「'+m.name+'」→「'+child.name+'」诞生！', 2400);
+  toast('🌿 「'+f.name+'」×「'+m.name+'」开始繁育，8 分钟后见！', 2600);
+}
+
+/* 主循环每帧调用：到点就产出马驹 */
+function updateBreedJob(){
+  const J = G.breedJob;
+  if (!J || J.claimed) return;
+  if (performance.now() - J.start < J.dur) return;
+
+  const child = breedHorses(J.father, J.mother);
+  child.singleRace = true;          // ★ 繁育马只能参赛 1 次
+  child.racesLeft  = 1;
+  G.stable.push(child);
+  J.child = child;
+  J.claimed = true;
+
+  updateHUD();
+  toast('🎉 「'+J.father.name+'」×「'+J.mother.name+'」→「'+child.name+'」诞生！（只能参赛 1 次）', 3400);
+  if (!document.getElementById('breedOverlay').classList.contains('hidden')) renderBreed();
+}
+
+/* 只创建一次结构，避免动画被打断 */
+function buildBreedPanel(){
+  const box = document.getElementById('breedJobBox');
+  box.dataset.built = '1';
+  box.innerHTML =
+    '<div class="breed-card">' +
+      '<div class="breed-egg" id="breedEgg">💞</div>' +
+      '<div class="breed-title" id="breedTitle">…</div>' +
+      '<div class="breed-story" id="breedStory">…</div>' +
+      '<div class="breed-bar"><div class="breed-fill" id="breedFill" style="width:0%"></div></div>' +
+      '<div class="breed-time" id="breedTime">…</div>' +
+      '<button class="btn" id="btnBreedClaim" style="width:100%;margin-top:10px;display:none">带 它 去 马 厩</button>' +
+    '</div>';
+  document.getElementById('btnBreedClaim').onclick = function(){
+    G.breedJob = null;
+    updateBreedPanel();
+    renderBreed();
+  };
+}
+
+function updateBreedPanel(){
+  const box = document.getElementById('breedJobBox');
+  if (!box) return;
+  const J = G.breedJob;
+
+  if (!J){
+    box.style.display = 'none';
+    box.dataset.built = '';
+    box.innerHTML = '';
+    return;
+  }
+  box.style.display = 'block';
+  if (box.dataset.built !== '1') buildBreedPanel();
+
+  const egg   = document.getElementById('breedEgg');
+  const title = document.getElementById('breedTitle');
+  const story = document.getElementById('breedStory');
+  const fill  = document.getElementById('breedFill');
+  const time  = document.getElementById('breedTime');
+  const claim = document.getElementById('btnBreedClaim');
+
+  if (J.claimed){
+    egg.textContent = '🐴';
+    egg.classList.remove('hot');
+    title.textContent = '🎉 「'+J.child.name+'」已经诞生！';
+    story.innerHTML = '它已经跑到马厩里去了。注意：<b>繁育出的马只能参赛 1 次</b>。';
+    fill.style.width = '100%';
+    time.textContent = '繁育完成';
+    claim.style.display = 'block';
+    return;
+  }
+
+  claim.style.display = 'none';
+
+  const el   = performance.now() - J.start;
+  const p    = clamp(el / J.dur, 0, 1);
+  const left = Math.max(0, J.dur - el);
+  const mm   = String(Math.floor(left/60000)).padStart(2,'0');
+  const ss   = String(Math.floor(left%60000/1000)).padStart(2,'0');
+
+  let seg = BREED_STORY[0];
+  for (let i=0;i<BREED_STORY.length;i++) if (p >= BREED_STORY[i].t) seg = BREED_STORY[i];
+
+  const hot = p > 0.72;
+  egg.classList.toggle('hot', hot);
+  egg.textContent = hot ? '🥚' : '💞';
+
+  title.textContent = seg.title;
+  story.innerHTML = seg.line
+    .replace(/\{F\}/g, '<b>'+J.father.name+'</b>')
+    .replace(/\{M\}/g, '<b>'+J.mother.name+'</b>');
+  fill.style.width = (p*100).toFixed(2) + '%';
+  time.textContent = '⏳ 剩余 ' + mm + ':' + ss + '　·　' + (p*100).toFixed(1) + '%';
 }
 
 /* ============================== 商店 ============================== */
 const SHOP_ITEMS = [
   {
-    id:'lasso', ico:'🪢', name:'套索', price:100,
+    id:'lasso', ico:'🪢', name:'套索', price:150,
     desc:'捕获野马必备工具。每扔一次消耗 1 个。'
   },
   {
-    id:'lasso10', ico:'🪢', name:'套索 ×10 优惠装', price:900,
-    desc:'一次买 10 个套索，省 100 金币。'
+    id:'lasso10', ico:'🪢', name:'套索 ×10 优惠装', price:1350,
+    desc:'一次买 10 个套索，省 150 金币。'
   },
   {
     id:'herb', ico:'🌿', name:'育马灵草', price:300,
@@ -2639,7 +3035,7 @@ function buyItem(it, needTarget){
 
   /* 消耗品 */
   G.coins -= it.price;
-  if (it.id === 'lasso'){ G.lassoCount += 1; toast('🪢 套索 ×1（共 '+G.lassoCount+'）', 1500); }
+  if (it.id === 'lasso'){ G.lassoCount += 1; toast('➰套索 ×1（共 '+G.lassoCount+'）', 1500); }
   else if (it.id === 'lasso10'){ G.lassoCount += 10; toast('🪢 套索 ×10（共 '+G.lassoCount+'）', 1700); }
   else if (it.id === 'herb'){ G.herbCount += 1; toast('🌿 育马灵草 ×1（共 '+G.herbCount+'）', 1500); }
   updateHUD();
@@ -2926,6 +3322,8 @@ function loop(now){
   if (dt < 0) dt = 0;
   world.lastDt = dt;
 
+  updateBreedJob();
+
   if (!G.paused){
     if (G.mode === 'world'){
       world.time += dt;
@@ -2953,6 +3351,7 @@ function loop(now){
 /* ============================== 启动 ============================== */
 buildWorld();
 updateHUD();
+setInterval(updateBreedPanel, 120);
 if (G.stable.length === 0){
   // 送 2 匹开局马，方便立刻体验育马 / 商店 / 赌马
   const seedA = makeHorse('horse'); seedA.gender = 'male';
